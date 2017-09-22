@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Menus,
-  ExtCtrls, StdCtrls, LCLIntf, Buttons, DbCtrls,
+  ExtCtrls, StdCtrls, LCLIntf, Buttons, DbCtrls, ExtDlgs,
   componentes1;
 
 type
@@ -14,6 +14,7 @@ type
   { TfrmMain }
 
   TfrmMain = class(TForm)
+    SaveDialog1: TSaveDialog;
 
     function TColorToHex(Cor: TColor): string;
     function Replaces(s: string): String;
@@ -125,10 +126,14 @@ procedure TfrmMain.Finalizar(Sender: TObject);
 var
   i: integer;
   memo: TMemo;
+  svdlg: TSaveDialog;
 begin
      memo := TMemo.Create(self);
      memo.Visible := false;
      memo.Clear;
+     svdlg := TSaveDialog.Create(self);
+     svdlg.Filter := '.TXT|*.txt';
+     svdlg.Title := 'Criar arquivo para SDK3';
 
      for i := 0 to ComponentCount - 1 do
      begin
@@ -163,8 +168,13 @@ begin
        end;
      end;
 
-     memo.Lines.SaveToFile('C:\Users\04783714118\Desktop\Nova pasta\file.xml');
+     if svdlg.Execute then
+     begin
+          memo.Lines.SaveToFile(svdlg.FileName);
+     end;
      memo.free;
+     svdlg.Free;
+
 end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);

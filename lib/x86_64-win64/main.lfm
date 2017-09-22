@@ -1,66 +1,17 @@
 object frmMain: TfrmMain
   Left = 0
-  Height = 340
+  Height = 477
   Top = 0
-  Width = 664
-  ActiveControl = SDK3Button1
+  Width = 483
   Caption = 'frmMain'
-  ClientHeight = 340
-  ClientWidth = 664
+  ClientHeight = 477
+  ClientWidth = 483
   OnCreate = FormCreate
   LCLVersion = '1.6.4.0'
   Visible = False
-  object SDK3Button1: TSDK3Button
-    Left = 0
-    Height = 25
-    Top = 0
-    Width = 664
-    Align = alTop
-    Caption = 'Clique aqui!'
-  end
-  object SDK3ColorComboBox1: TSDK3ColorComboBox
-    Left = 24
-    Height = 23
-    Top = 56
-    Width = 100
-  end
-  object SDK3ComboBox1: TSDK3ComboBox
-    Left = 144
-    Height = 23
-    Top = 56
-    Width = 88
-    Field = 'letras'
-    Font.Color = clRed
-    Font.Height = -32
-    Font.Style = [fsBold]
-    Items = '{''A'', ''B'', ''C''}'
-    Text = 'SDK3ComboBox1'
-    Value = 'A'
-    Values = '{''A'', ''B'', ''C''}'
-  end
-  object SDK3CheckBox1: TSDK3CheckBox
-    Left = 0
-    Height = 23
-    Top = 317
-    Width = 664
-    Align = alBottom
-    Caption = 'Funciona'
-    Checked = True
-  end
-  object SDK3Edit1: TSDK3Edit
-    Left = 24
-    Height = 29
-    Top = 128
-    Width = 184
-    Transparent = False
-    IsPasswordEdit = False
-    Font.Color = clMenuHighlight
-    Font.Name = 'Century Gothic'
-    Min = 0
-    Max = 0
-    DecimalPlaces = 0
-    Field = 'nome'
-    asNumber = 0
-    Text = 'SDK3Edit1'
+  object SaveDialog1: TSaveDialog
+    Filter = '.TXT|*.txt'
+    left = 248
+    top = 232
   end
 end

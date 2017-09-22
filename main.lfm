@@ -1,12 +1,17 @@
 object frmMain: TfrmMain
   Left = 0
-  Height = 376
+  Height = 477
   Top = 0
-  Width = 393
+  Width = 483
   Caption = 'frmMain'
-  ClientHeight = 376
-  ClientWidth = 393
+  ClientHeight = 477
+  ClientWidth = 483
   OnCreate = FormCreate
   LCLVersion = '1.6.4.0'
   Visible = False
+  object SaveDialog1: TSaveDialog
+    Filter = '.TXT|*.txt'
+    left = 248
+    top = 232
+  end
 end
