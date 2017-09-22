@@ -1,0 +1,12 @@
+object frmMain: TfrmMain
+  Left = 0
+  Height = 376
+  Top = 0
+  Width = 393
+  Caption = 'frmMain'
+  ClientHeight = 376
+  ClientWidth = 393
+  OnCreate = FormCreate
+  LCLVersion = '1.6.4.0'
+  Visible = False
+end
