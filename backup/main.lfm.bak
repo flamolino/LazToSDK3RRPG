@@ -1,12 +1,20 @@
 object frmMain: TfrmMain
   Left = 0
-  Height = 376
+  Height = 608
   Top = 0
-  Width = 393
+  Width = 804
+  ActiveControl = SDK3Button1
   Caption = 'frmMain'
-  ClientHeight = 376
-  ClientWidth = 393
+  ClientHeight = 608
+  ClientWidth = 804
   OnCreate = FormCreate
   LCLVersion = '1.6.4.0'
   Visible = False
+  object SDK3Button1: TSDK3Button
+    Left = 64
+    Height = 25
+    Top = 160
+    Width = 75
+    Caption = 'SDK3Button1'
+  end
 end

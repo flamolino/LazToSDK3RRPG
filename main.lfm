@@ -1,17 +1,20 @@
 object frmMain: TfrmMain
   Left = 0
-  Height = 477
+  Height = 608
   Top = 0
-  Width = 483
+  Width = 804
+  ActiveControl = SDK3Button1
   Caption = 'frmMain'
-  ClientHeight = 477
-  ClientWidth = 483
+  ClientHeight = 608
+  ClientWidth = 804
   OnCreate = FormCreate
   LCLVersion = '1.6.4.0'
   Visible = False
-  object SaveDialog1: TSaveDialog
-    Filter = '.TXT|*.txt'
-    left = 248
-    top = 232
+  object SDK3Button1: TSDK3Button
+    Left = 64
+    Height = 25
+    Top = 160
+    Width = 75
+    Caption = 'SDK3Button1'
   end
 end
