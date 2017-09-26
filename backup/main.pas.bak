@@ -15,6 +15,11 @@ type
 
   TfrmMain = class(TForm)
     SDK3Button1: TSDK3Button;
+    SDK3CheckBox1: TSDK3CheckBox;
+    SDK3CheckBox2: TSDK3CheckBox;
+    SDK3ColorComboBox1: TSDK3ColorComboBox;
+    SDK3ComboBox1: TSDK3ComboBox;
+    SDK3Edit1: TSDK3Edit;
 
     function TColorToHex(Cor: TColor): string;
     function Replaces(s: string): String;
@@ -166,6 +171,7 @@ var
   memo: TMemo;
   svdlg: TSaveDialog;
 begin
+
      memo := TMemo.Create(self);
      memo.Visible := false;
      memo.Clear;
@@ -254,6 +260,8 @@ begin
      end;
      memo.free;
      svdlg.Free;
+
+
 
 end;
 

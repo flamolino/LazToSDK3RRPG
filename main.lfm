@@ -1,20 +1,75 @@
 object frmMain: TfrmMain
   Left = 0
-  Height = 608
+  Height = 251
   Top = 0
-  Width = 804
+  Width = 420
   ActiveControl = SDK3Button1
   Caption = 'frmMain'
-  ClientHeight = 608
-  ClientWidth = 804
+  ClientHeight = 251
+  ClientWidth = 420
   OnCreate = FormCreate
   LCLVersion = '1.6.4.0'
   Visible = False
   object SDK3Button1: TSDK3Button
-    Left = 64
+    Left = 16
     Height = 25
-    Top = 160
-    Width = 75
-    Caption = 'SDK3Button1'
+    Top = 48
+    Width = 152
+    Caption = 'Botão Teste!'
+    Font.Name = 'Times New Roman'
+    Font.Style = [fsBold, fsItalic]
+  end
+  object SDK3Edit1: TSDK3Edit
+    Left = 16
+    Height = 27
+    Top = 16
+    Width = 152
+    Transparent = False
+    IsPasswordEdit = False
+    Font.Color = clGreen
+    Font.Name = 'Century Gothic'
+    Font.Style = [fsBold]
+    Min = 0
+    Max = 0
+    DecimalPlaces = 0
+    Field = 'nome'
+    AsNumber = 0
+    Text = 'TesteFicha'
+  end
+  object SDK3CheckBox1: TSDK3CheckBox
+    Left = 16
+    Height = 23
+    Top = 96
+    Width = 90
+    Caption = 'TesteCheck'
+    Font.Style = [fsStrikeOut]
+  end
+  object SDK3ComboBox1: TSDK3ComboBox
+    Left = 200
+    Height = 23
+    Top = 16
+    Width = 208
+    Field = 'letras'
+    Font.Height = -13
+    Font.Name = 'Century Gothic'
+    Items = '{''A'',''B'',''C'',''D'',''E''}'
+    Value = 'A'
+    Values = '{''A'',''B'',''C'',''D'',''E''}'
+  end
+  object SDK3CheckBox2: TSDK3CheckBox
+    Left = 200
+    Height = 23
+    Top = 96
+    Width = 208
+    Caption = 'TesteCheck2'
+    Font.Style = [fsStrikeOut]
+  end
+  object SDK3ColorComboBox1: TSDK3ColorComboBox
+    Left = 0
+    Height = 23
+    Top = 228
+    Width = 420
+    Align = alBottom
+    Field = 'cor'
   end
 end

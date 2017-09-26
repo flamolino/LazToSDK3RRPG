@@ -15,6 +15,11 @@ type
 
   TfrmMain = class(TForm)
     SDK3Button1: TSDK3Button;
+    SDK3CheckBox1: TSDK3CheckBox;
+    SDK3CheckBox2: TSDK3CheckBox;
+    SDK3ColorComboBox1: TSDK3ColorComboBox;
+    SDK3ComboBox1: TSDK3ComboBox;
+    SDK3Edit1: TSDK3Edit;
 
     function TColorToHex(Cor: TColor): string;
     function Replaces(s: string): String;
@@ -83,7 +88,7 @@ begin
      LowerCase(booltostr(item.Visible)) + '" field="' + item.Field + '" '+#13+#9+#9 +
      'fontColor="#' + TColorToHex(item.Font.Color) +
      '" fontFamily="' + item.Font.Name + '" fontSize="' + inttostr(item.Font.Size) + '"'+
-     'items="' + item.Items + '" values="' + item.values + '" value="' + item.value+'" '+#13+#9+#9;
+     ' items="' + item.Items + '" values="' + item.values + '" value="' + item.value+'" '+#13+#9+#9;
 
      s := s + Fonts(item.Font);
      s := s + ' ' + Aligns(item) + '/>';
