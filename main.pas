@@ -15,11 +15,16 @@ type
 
   TfrmMain = class(TForm)
     SDK3Button1: TSDK3Button;
+    SDK3Button2: TSDK3Button;
+    SDK3Button3: TSDK3Button;
     SDK3CheckBox1: TSDK3CheckBox;
     SDK3CheckBox2: TSDK3CheckBox;
     SDK3ColorComboBox1: TSDK3ColorComboBox;
     SDK3ComboBox1: TSDK3ComboBox;
     SDK3Edit1: TSDK3Edit;
+    SDK3FlowLayout1: TSDK3FlowLayout;
+    SDK3Image1: TSDK3Image;
+    SDK3Layout1: TSDK3Layout;
 
     function TColorToHex(Cor: TColor): string;
     function Replaces(s: string): String;
@@ -34,9 +39,11 @@ type
     function MakeEdit(item: TSDK3Edit): String;
     function MakeFlowLayout(item: TSDK3FlowLayout): String;
     function MakeImage(item: TSDK3Image): String;
+    function MakeLayout(item: TSDK3Layout): String;
 
     procedure FormCreate(Sender: TObject);
     procedure Finalizar(Sender: TObject);
+    function geraTags(comp: TComponent; memo: TMemo): String;
   private
     { private declarations }
   public
@@ -156,7 +163,8 @@ begin
      LowerCase(booltostr(item.Visible)) + '" '+#13+#9+#9 +
      ' center="' + LowerCase(booltostr(item.Center)) + '" editable="' +
      LowerCase(booltostr(item.Editable)) + '" field="' + item.Field + '" '+
-     'naturalWidth="' + floattostr(item.NaturalWidth) + '" optimize="' +
+     'naturalWidth="' + floattostr(item.NaturalWidth) + '" naturalHeight="' +
+     floattostr(item.NaturalHeight) + '" optimize="' +
      LowerCase(booltostr(item.Optimize)) + '" showProgress="' +
      LowerCase(booltostr(item.ShowProgress)) + '" src="' + item.Src + '" '+#13+#9+#9 +
      'URLWhileLoading="' + item.URLWhileLoading + '" ';
@@ -165,11 +173,25 @@ begin
      result := Replaces(s);
 end;
 
+function TfrmMain.MakeLayout(item: TSDK3Layout): String;
+var
+  s: String;
+begin
+     s := '<layout enabled="' + LowerCase(booltostr(item.Enabled)) +
+     '" hint="' + item.Hint + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
+     LowerCase(booltostr(item.Visible)) + '" '+#13+#9+#9 +
+     'frameStyle="' + item.FrameStyle + '" frameRegion="' + item.FrameRegion +'" ';
+
+     s := s  + Aligns(item) + '>';
+     result := Replaces(s);
+end;
+
 procedure TfrmMain.Finalizar(Sender: TObject);
 var
-  i, lyt: integer;
+  i, j, c, lyt: integer;
   memo: TMemo;
   svdlg: TSaveDialog;
+  memos: array of TMemo;
 begin
 
      memo := TMemo.Create(self);
@@ -182,76 +204,70 @@ begin
      lyt := 0;{treho de código ainda em desenvolvimento}
      for i := 0 to ComponentCount - 1 do
      begin
-          if Components[i] is TSDK3FlowLayout then
+          if (Components[i] is TSDK3FlowLayout) or
+          (Components[i] is TSDK3Layout) then
           begin
                lyt := lyt + 1;
           end;
      end;///////////////////////////////////////////////
 
-     for i := 0 to ComponentCount - 1 do
+     if lyt = 0 then
      begin
-       if Components[i] is TSDK3Button then
+       for i := 0 to ComponentCount - 1 do
        begin
-            if lyt = 0 then
-            begin
-              memo.Lines.add(#9 + MakeButton((Components[i] as TSDK3Button)));
-              memo.lines.add('');
-            end;
-       end
-       else
-       if Components[i] is TSDK3ColorComboBox then
-       begin
-            if lyt = 0 then
-            begin
-              memo.Lines.add(#9 + MakeColorComboBox((Components[i] as TSDK3ColorComboBox)));
-              memo.lines.add('');
-            end;
-       end
-       else
-       if Components[i] is TSDK3ComboBox then
-       begin
-            if lyt = 0 then
-            begin
-              memo.Lines.add(#9 + MakeComboBox((Components[i] as TSDK3ComboBox)));
-              memo.lines.add('');
-            end;
-       end
-       else
-       if Components[i] is TSDK3CheckBox then
-       begin
-            if lyt = 0 then
-            begin
-              memo.Lines.add(#9 + MakeCheckBox((Components[i] as TSDK3CheckBox)));
-              memo.lines.add('');
-            end;
-       end
-       else
-       if Components[i] is TSDK3Edit then
-       begin
-            if lyt = 0 then
-            begin
-              memo.Lines.add(#9 + MakeEdit((Components[i] as TSDK3Edit)));
-              memo.lines.add('');
-            end;
-       end
-       else
-       if Components[i] is TSDK3FlowLayout then
-       begin
-            if lyt = 0 then
-            begin
-              memo.Lines.add(#9 + MakeflowLayout((Components[i] as TSDK3FlowLayout)));
-              memo.lines.add('');
-            end;
-       end
-       else
-       if Components[i] is TSDK3Image then
-       begin
-            if lyt = 0 then
-            begin
-              memo.Lines.add(#9 + MakeImage((Components[i] as TSDK3Image)));
-              memo.lines.add('');
-            end;
-       end
+            memo.text := geraTags(Components[i], memo);
+       end;
+     end
+     else
+     begin
+          setLength(memos, lyt);
+          for i := 0 to lyt do
+          begin
+               memos[i] := TMemo.Create(self);
+               memos[i].Visible := false;
+               memos[i].Clear;
+          end;
+
+          c := 0;
+          for i := 0 to ComponentCount - 1 do
+          begin
+
+
+               if (Components[i] is TSDK3Layout) then
+               begin
+                    memos[c].text := geraTags(Components[i], memos[c]);
+                    for j := 0 to ComponentCount - 1 do
+                    begin
+                         if Components[j].GetParentComponent = Components[i] then
+                            memos[c].text := geraTags(Components[j], memos[c]);
+                    end;
+                    memos[c].lines.Add(#13+#9+'</layout>');
+                    c := c + 1;
+               end
+               else
+               if (Components[i] is TSDK3FlowLayout) then
+               begin
+                    memos[c].text := geraTags(Components[i], memos[c]);
+                    for j := 0 to ComponentCount - 1 do
+                    begin
+                         if Components[j].GetParentComponent = Components[i] then
+                            memos[c].text := geraTags(Components[j], memos[c]);
+                    end;
+                    memos[c].lines.Add(#13+#9+'</flowLayout>');
+                    c := c + 1;
+               end
+               else
+               if (Components[i].GetParentComponent = frmMain) then
+               begin
+                    memo.text := geraTags(Components[i], memo);
+               end;
+          end;
+
+          for i := 0 to lyt do
+          begin
+               memo.lines.Add(memos[i].text);
+               memos[i].free;
+          end;
      end;
 
      if svdlg.Execute then
@@ -261,8 +277,58 @@ begin
      memo.free;
      svdlg.Free;
 
+end;
 
-
+function TfrmMain.geraTags(comp: TComponent; memo: TMemo): String;
+begin
+         if comp is TSDK3Button then
+         begin
+                memo.Lines.add(#9 + MakeButton((comp as TSDK3Button)));
+                memo.lines.add('');
+         end
+         else
+         if comp is TSDK3ColorComboBox then
+         begin
+                memo.Lines.add(#9 + MakeColorComboBox((comp as TSDK3ColorComboBox)));
+                memo.lines.add('');
+         end
+         else
+         if comp is TSDK3ComboBox then
+         begin
+                memo.Lines.add(#9 + MakeComboBox((comp as TSDK3ComboBox)));
+                memo.lines.add('');
+         end
+         else
+         if comp is TSDK3CheckBox then
+         begin
+                memo.Lines.add(#9 + MakeCheckBox((comp as TSDK3CheckBox)));
+                memo.lines.add('');
+         end
+         else
+         if comp is TSDK3Edit then
+         begin
+                memo.Lines.add(#9 + MakeEdit((comp as TSDK3Edit)));
+                memo.lines.add('');
+         end
+         else
+         if comp is TSDK3FlowLayout then
+         begin
+                memo.Lines.add(#9 + MakeflowLayout((comp as TSDK3FlowLayout)));
+                memo.lines.add('');
+         end
+         else
+         if comp is TSDK3Image then
+         begin
+                memo.Lines.add(#9 + MakeImage((comp as TSDK3Image)));
+                memo.lines.add('');
+         end
+         else
+         if comp is TSDK3Layout then
+         begin
+                memo.Lines.add(#9 + MakeLayout((comp as TSDK3Layout)));
+                memo.lines.add('');
+         end;
+         result := memo.text;
 end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
@@ -380,8 +446,8 @@ begin
      s := stringReplace(s, 'editable="-1"', 'editable="true"', [rfReplaceALL]);
      s := stringReplace(s, 'optimize="0"', '', [rfReplaceALL]);
      s := stringReplace(s, 'optimize="-1"', 'optimize="true"', [rfReplaceALL]);
-     s := stringReplace(s, 'showProgress="0"', '', [rfReplaceALL]);
-     s := stringReplace(s, 'showProgress="-1"', 'showProgress="true"', [rfReplaceALL]);
+     s := stringReplace(s, 'showProgress="-1"', '', [rfReplaceALL]);
+     s := stringReplace(s, 'showProgress="0"', 'showProgress="true"', [rfReplaceALL]);
 
      s := stringReplace(s, 'hint=""', '', [rfReplaceALL]);
      s := stringReplace(s, 'fontSize="0"', '', [rfReplaceALL]);
@@ -398,8 +464,12 @@ begin
      s := stringReplace(s, 'lineSpacing=""', '', [rfReplaceALL]);
      s := stringReplace(s, 'contentWidth="0"', '', [rfReplaceALL]);
      s := stringReplace(s, 'contentHeight="0"', '', [rfReplaceALL]);
+     s := stringReplace(s, 'contentHeight="0"', '', [rfReplaceALL]);
+     s := stringReplace(s, 'naturalWidth="0"', '', [rfReplaceALL]);
+     s := stringReplace(s, 'naturalHeight="0"', '', [rfReplaceALL]);
      s := stringReplace(s, 'frameStyle=""', '', [rfReplaceALL]);
      s := stringReplace(s, 'frameRegion=""', '', [rfReplaceALL]);
+     s := stringReplace(s, 'URLWhileLoading=""', '', [rfReplaceALL]);
 
      s := stringReplace(s, '   ', ' ', [rfReplaceALL]);
      s := stringReplace(s, '  ', ' ', [rfReplaceALL]);

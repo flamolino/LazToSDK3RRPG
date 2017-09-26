@@ -1,11 +1,11 @@
 object frmMain: TfrmMain
   Left = 0
-  Height = 251
+  Height = 380
   Top = 0
   Width = 420
   ActiveControl = SDK3Button1
   Caption = 'frmMain'
-  ClientHeight = 251
+  ClientHeight = 380
   ClientWidth = 420
   OnCreate = FormCreate
   LCLVersion = '1.6.4.0'
@@ -46,7 +46,7 @@ object frmMain: TfrmMain
   end
   object SDK3ComboBox1: TSDK3ComboBox
     Left = 200
-    Height = 23
+    Height = 25
     Top = 16
     Width = 208
     Field = 'letras'
@@ -67,9 +67,53 @@ object frmMain: TfrmMain
   object SDK3ColorComboBox1: TSDK3ColorComboBox
     Left = 0
     Height = 23
-    Top = 228
+    Top = 357
     Width = 420
     Align = alBottom
     Field = 'cor'
+  end
+  object SDK3Image1: TSDK3Image
+    Left = 16
+    Height = 90
+    Top = 128
+    Width = 392
+    Src = 'https://cdn.bulbagarden.net/upload/thumb/a/a4/186Politoed.png/250px-186Politoed.png'
+    Center = False
+    Optimize = False
+    ShowProgress = False
+    Editable = False
+    NaturalWidth = 0
+  end
+  object SDK3Layout1: TSDK3Layout
+    Left = 40
+    Height = 50
+    Top = 296
+    Width = 336
+    object SDK3Button2: TSDK3Button
+      Left = 40
+      Height = 25
+      Top = 16
+      Width = 75
+      Caption = 'SDK3Button2'
+    end
+  end
+  object SDK3FlowLayout1: TSDK3FlowLayout
+    Left = 40
+    Height = 50
+    Top = 224
+    Width = 338
+    AutoHeight = False
+    MaxControlsPerLine = 0
+    MaxColumns = 0
+    LineSpacing = 0
+    ContentWidth = 0
+    ContentHeight = 0
+    object SDK3Button3: TSDK3Button
+      Left = 1
+      Height = 25
+      Top = 1
+      Width = 75
+      Caption = 'SDK3Button3'
+    end
   end
 end

@@ -153,9 +153,25 @@ type
     //showStyle
     property Center: Boolean read FCenter write FCenter;
     property Optimize: Boolean read FOptimize write FOptimize;
-    property showProgress: Boolean read FShowP write FShowP;
-    property editable: Boolean read Feditable write Feditable;
-    property  naturalWidth: Double read FnaturalWidth write FnaturalWidth;
+    property ShowProgress: Boolean read FShowP write FShowP;
+    property Editable: Boolean read Feditable write Feditable;
+    property NaturalWidth: Double read FnaturalWidth write FnaturalWidth;
+    property Enabled;
+    property Visible;
+  end;
+
+type
+  TSDK3Layout = class(TCustomPanel)
+  private
+    frameS, frameR: String;
+  protected
+
+  public
+
+  published
+    property Align;
+    property FrameStyle: String read frameS write frameS;
+    property FrameRegion: String read frameR write frameR;
     property Enabled;
     property Visible;
   end;
@@ -168,7 +184,7 @@ procedure Register;
 begin
   {$I componentes1_icon.lrs}
   RegisterComponents('RRPGSDK3',[TSDK3Button, TSDK3ColorComboBox, TSDK3ComboBox,
-  TSDK3CheckBox, TSDK3Edit, TSDK3FlowLayout, TSDK3Image]);
+  TSDK3CheckBox, TSDK3Edit, TSDK3FlowLayout, TSDK3Image, TSDK3Layout]);
 end;
 
 end.
