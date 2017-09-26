@@ -27,3 +27,16 @@ Exemplo de Funcionamento:
 3- Adicionando o código ao projeto: https://i.imgur.com/bqrLJ5z.png
 
 4- Testando o resultado: https://i.imgur.com/rjjiLu3.png
+
+
+-------
+Tags funcionando até o momento:
+
+- Button
+- ColorComboBox
+- ComboBox
+- CheckBox
+- Edit
+- FlowLayout
+- Image
+- Layout
