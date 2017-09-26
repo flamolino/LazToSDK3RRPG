@@ -1,5 +1,6 @@
 # LazToSDK3RRPG
 Métodos em FreePascal (Lazarus) para auxiliar a criação de telas de fichas do RRPG Firecast com o sdk3.
+No geral, apenas ajuda a posicionar os componentes para economizar tempo na criação de uma tela.
 
 ------
 Como usar:
@@ -16,3 +17,13 @@ Como usar:
 
 6-  Em seguida clique em "Executar" -> Clique em "Executar (f9)" -> Clique em "GERAR FICHA" -> Salve a ficha e pronto!
 
+-------
+Exemplo de Funcionamento:
+
+1- Montando a Tela no lazarus: https://i.imgur.com/UEKp8hM.png
+
+2- Exportando o código: https://i.imgur.com/1ysJFNM.png
+
+3- Adicionando o código ao projeto: https://i.imgur.com/bqrLJ5z.png
+
+4- Testando o resultado: https://i.imgur.com/rjjiLu3.png
