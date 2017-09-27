@@ -42,3 +42,4 @@ Tags funcionando até o momento:
 - Layout
 - FlowPart
 - ImageCheckBox
+- Label
