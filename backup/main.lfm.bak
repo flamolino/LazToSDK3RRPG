@@ -2,11 +2,11 @@ object frmMain: TfrmMain
   Left = 0
   Height = 380
   Top = 0
-  Width = 420
+  Width = 718
   ActiveControl = SDK3Button1
   Caption = 'frmMain'
   ClientHeight = 380
-  ClientWidth = 420
+  ClientWidth = 718
   OnCreate = FormCreate
   LCLVersion = '1.6.4.0'
   Visible = False
@@ -68,7 +68,7 @@ object frmMain: TfrmMain
     Left = 0
     Height = 23
     Top = 357
-    Width = 420
+    Width = 718
     Align = alBottom
     Field = 'cor'
   end
@@ -83,6 +83,7 @@ object frmMain: TfrmMain
     ShowProgress = False
     Editable = False
     NaturalWidth = 0
+    NaturalHeight = 0
   end
   object SDK3Layout1: TSDK3Layout
     Left = 40
@@ -115,5 +116,33 @@ object frmMain: TfrmMain
       Width = 75
       Caption = 'SDK3Button3'
     end
+  end
+  object SDK3FlowPart1: TSDK3FlowPart
+    Left = 440
+    Height = 136
+    Top = 16
+    Width = 200
+    MinWidth = 0
+    MaxWidth = 0
+    MinScaledWidth = 0
+    MaxScaledWidth = 0
+    AvoidScale = False
+    adjustHeightToLine = False
+    object SDK3ComboBox2: TSDK3ComboBox
+      Left = 48
+      Height = 23
+      Top = 56
+      Width = 100
+      Text = 'SDK3ComboBox2'
+    end
+  end
+  object SDK3ImageCheckBox1: TSDK3ImageCheckBox
+    Left = 440
+    Height = 90
+    Top = 176
+    Width = 90
+    Checked = False
+    Optimize = False
+    AutoChange = False
   end
 end

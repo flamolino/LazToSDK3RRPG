@@ -177,6 +177,55 @@ type
     property Visible;
   end;
 
+type
+  TSDK3FlowPart = class(TCustomPanel)
+  private
+    FminWidth, FMaxWidth, FminScaledWidth, FMaxScaledWidth: Double;
+    FAvoid, FadjustHeightToLine: Boolean;
+    FstepSizes: String;
+    frameS, frameR: String;
+  protected
+
+  public
+
+  published
+    property Align;
+    property FrameStyle: String read frameS write frameS;
+    property FrameRegion: String read frameR write frameR;
+    property Enabled;
+    property Visible;
+    property MinWidth: Double read FminWidth write FminWidth;
+    property MaxWidth: Double read FMaxWidth write FMaxWidth;
+    property MinScaledWidth: Double read FminScaledWidth write FminScaledWidth;
+    property MaxScaledWidth: Double read FMaxScaledWidth write FMaxScaledWidth;
+    property AvoidScale: Boolean read FAvoid write FAvoid;
+    property adjustHeightToLine: Boolean read FadjustHeightToLine write FadjustHeightToLine;
+    //vertAlign
+    property StepSizes: String read FstepSizes write FstepSizes;
+
+end;
+
+type
+  TSDK3ImageCheckBox = class(TCustomImage)
+  private
+         FField, FcheckedImage, FUncheckedImage: String;
+         FautoChange, FCheck, FOptimize: Boolean;
+  protected
+
+  public
+
+  published
+    property Align;
+    property Field: String read FField write FField;
+    property Checked: Boolean read FCheck write FCheck;
+    property Optimize: Boolean read FOptimize write FOptimize;
+    property Enabled;
+    property Visible;
+    property CheckedImage: String read FcheckedImage write FcheckedImage;
+    property UncheckedImage: String read FUncheckedImage write FUncheckedImage;
+    property AutoChange: Boolean read FautoChange write FautoChange;
+  end;
+
 procedure Register;
 
 implementation
@@ -185,7 +234,8 @@ procedure Register;
 begin
   {$I componentes1_icon.lrs}
   RegisterComponents('RRPGSDK3',[TSDK3Button, TSDK3ColorComboBox, TSDK3ComboBox,
-  TSDK3CheckBox, TSDK3Edit, TSDK3FlowLayout, TSDK3Image, TSDK3Layout]);
+  TSDK3CheckBox, TSDK3Edit, TSDK3FlowLayout, TSDK3Image, TSDK3Layout, TSDK3FlowPart,
+  TSDK3ImageCheckBox]);
 end;
 
 end.

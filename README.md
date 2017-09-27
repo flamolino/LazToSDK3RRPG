@@ -40,3 +40,5 @@ Tags funcionando até o momento:
 - FlowLayout
 - Image
 - Layout
+- FlowPart
+- ImageCheckBox
