@@ -221,9 +221,29 @@ type
     property Optimize: Boolean read FOptimize write FOptimize;
     property Enabled;
     property Visible;
+    property Caption;
     property CheckedImage: String read FcheckedImage write FcheckedImage;
     property UncheckedImage: String read FUncheckedImage write FUncheckedImage;
     property AutoChange: Boolean read FautoChange write FautoChange;
+  end;
+
+type
+  TSDK3Label = class(TCustomLabel)
+  private
+    FField: String;
+
+  protected
+
+  public
+
+  published
+    property Align;
+    property Font;
+    property Field: String read FField write FField;
+    property Enabled;
+    property Text;
+    property Visible;
+    property AutoSize;
   end;
 
 procedure Register;
@@ -235,7 +255,7 @@ begin
   {$I componentes1_icon.lrs}
   RegisterComponents('RRPGSDK3',[TSDK3Button, TSDK3ColorComboBox, TSDK3ComboBox,
   TSDK3CheckBox, TSDK3Edit, TSDK3FlowLayout, TSDK3Image, TSDK3Layout, TSDK3FlowPart,
-  TSDK3ImageCheckBox]);
+  TSDK3ImageCheckBox, TSDK3Label]);
 end;
 
 end.

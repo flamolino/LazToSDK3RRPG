@@ -209,7 +209,7 @@ type
   TSDK3ImageCheckBox = class(TCustomImage)
   private
          FField, FcheckedImage, FUncheckedImage: String;
-         FautoChange, FCheck: Boolean;
+         FautoChange, FCheck, FOptimize: Boolean;
   protected
 
   public
@@ -226,6 +226,25 @@ type
     property AutoChange: Boolean read FautoChange write FautoChange;
   end;
 
+type
+  TSDK3Label = class(TCustomLabel)
+  private
+    FField: String;
+
+  protected
+
+  public
+
+  published
+    property Align;
+    property Font;
+    property Field: String read FField write FField;
+    property Enabled;
+    property Text;
+    property Visible;
+    property AutoSize;
+  end;
+
 procedure Register;
 
 implementation
@@ -235,7 +254,7 @@ begin
   {$I componentes1_icon.lrs}
   RegisterComponents('RRPGSDK3',[TSDK3Button, TSDK3ColorComboBox, TSDK3ComboBox,
   TSDK3CheckBox, TSDK3Edit, TSDK3FlowLayout, TSDK3Image, TSDK3Layout, TSDK3FlowPart,
-  TSDK3ImageCheckBox]);
+  TSDK3ImageCheckBox, TSDK3Label]);
 end;
 
 end.

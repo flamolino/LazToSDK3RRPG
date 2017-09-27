@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Menus,
-  ExtCtrls, StdCtrls, LCLIntf, Buttons, DbCtrls,
+  ExtCtrls, StdCtrls, LCLIntf, Buttons, DbCtrls, ComCtrls,
   componentes1;
 
 type
@@ -14,21 +14,21 @@ type
   { TfrmMain }
 
   TfrmMain = class(TForm)
-    SDK3Button1: TSDK3Button;
-    SDK3Button2: TSDK3Button;
-    SDK3Button3: TSDK3Button;
-    SDK3CheckBox1: TSDK3CheckBox;
-    SDK3CheckBox2: TSDK3CheckBox;
-    SDK3ColorComboBox1: TSDK3ColorComboBox;
-    SDK3ComboBox1: TSDK3ComboBox;
-    SDK3ComboBox2: TSDK3ComboBox;
-    SDK3Edit1: TSDK3Edit;
-    SDK3FlowLayout1: TSDK3FlowLayout;
-    SDK3FlowPart1: TSDK3FlowPart;
-    SDK3Image1: TSDK3Image;
-    SDK3ImageCheckBox1: TSDK3ImageCheckBox;
-    SDK3Layout1: TSDK3Layout;
+    chkTagForm: TCheckBox;
+    cbbTemplate: TComboBox;
+    cbbTheme: TComboBox;
+    edtDataType: TEdit;
+    edtTitle: TEdit;
+    edtNome: TEdit;
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    ToolButton2: TToolButton;
+    ToolButton3: TToolButton;
+    ToolButton4: TToolButton;
+    ToolButton5: TToolButton;
 
+    procedure cbbThemeChange(Sender: TObject);
+    procedure chkTagFormChange(Sender: TObject);
     function TColorToHex(Cor: TColor): string;
     function Replaces(s: string): String;
     function Aligns(item: TWinControl): String;
@@ -45,6 +45,7 @@ type
     function MakeLayout(item: TSDK3Layout): String;
     function MakeFlowPart(item: TSDK3FlowPart): String;
     function MakeImageCheckBox(item: TSDK3ImageCheckBox): String;
+    function MakeLabel(item: TSDK3Label): String;
 
     procedure FormCreate(Sender: TObject);
     procedure Finalizar(Sender: TObject);
@@ -225,6 +226,22 @@ begin
      result := Replaces(s);
 end;
 
+function TfrmMain.MakeLabel(item: TSDK3Label): String;
+var
+  s: String;
+begin
+     s := '<label text="' + item.Caption + '" enabled="' + LowerCase(booltostr(item.Enabled)) +
+     '" hint="' + item.Hint + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
+     LowerCase(booltostr(item.Visible)) + '" field="' + item.Field + '" '+
+     'fontColor="#' + TColorToHex(item.Font.Color) +
+     '" fontFamily="' + item.Font.Name + '" fontSize="' + inttostr(item.Font.Size) +
+     '" autoSize="' + LowerCase(booltostr(item.AutoSize)) + '" ';
+
+     s := s + Fonts(item.Font);
+     s := s + ' ' + AlignsNotWinControl(item.Align, item) + '/>';
+     result := Replaces(s);
+end;
+
 procedure TfrmMain.Finalizar(Sender: TObject);
 var
   i, j, c, lyt: integer;
@@ -239,6 +256,13 @@ begin
      svdlg := TSaveDialog.Create(self);
      svdlg.Filter := '.TXT|*.txt';
      svdlg.Title := 'Criar arquivo para SDK3';
+
+     if chkTagForm.Checked then
+     begin
+       memo.Lines.Add('<?xml version="1.0" encoding="UTF-8"?>'+#13+#9);
+       memo.Lines.Add('<form formType="'+cbbTemplate.Text+'" dataType="'+edtDataType.Text+'" ');
+       memo.Lines.Add('title="'+edtTitle.Text+'" name="'+edtNome.Text+'" theme="'+cbbTheme.Text+'">'+#13);
+     end;
 
      lyt := 0;
      for i := 0 to ComponentCount - 1 do
@@ -271,8 +295,6 @@ begin
           c := 0;
           for i := 0 to ComponentCount - 1 do
           begin
-
-
                if (Components[i] is TSDK3Layout) then
                begin
                     memos[c].text := geraTags(Components[i], memos[c]);
@@ -320,6 +342,11 @@ begin
                memo.lines.Add(memos[i].text);
                memos[i].free;
           end;
+     end;
+
+     if chkTagForm.Checked then
+     begin
+       memo.Lines.Add(#13+'</form>');
      end;
 
      if svdlg.Execute then
@@ -390,6 +417,12 @@ begin
          if comp is TSDK3ImageCheckBox then
          begin
                 memo.Lines.add(#9 + MakeImageCheckBox((comp as TSDK3ImageCheckBox)));
+                memo.lines.add('');
+         end
+         else
+         if comp is TSDK3Label then
+         begin
+                memo.Lines.add(#9 + MakeLabel((comp as TSDK3Label)));
                 memo.lines.add('');
          end;
          result := memo.text;
@@ -468,7 +501,7 @@ begin
      if itemA <> alClient then
      begin
           if itemA = alNone then
-               f := 'left="' + inttostr(item.Left) + '" top="' + inttostr(item.top) +
+               f := 'left="' + inttostr(item.Left) + '" top="' + inttostr(item.top - 26) +
                '" width="' + inttostr(item.Width) + '" height="' + inttostr(item.Height) + '"'
           else
           begin
@@ -514,6 +547,8 @@ begin
      s := stringReplace(s, 'showProgress="0"', 'showProgress="true"', [rfReplaceALL]);
      s := stringReplace(s, 'autoChange="-1"', 'autoChange="false"', [rfReplaceALL]);
      s := stringReplace(s, 'autoChange="0"', '', [rfReplaceALL]);
+     s := stringReplace(s, 'autoSize="-1"', '', [rfReplaceALL]);
+     s := stringReplace(s, 'autoSize="0"', 'autoSize="true"', [rfReplaceALL]);
 
      s := stringReplace(s, 'hint=""', '', [rfReplaceALL]);
      s := stringReplace(s, 'fontSize="0"', '', [rfReplaceALL]);
@@ -561,5 +596,55 @@ begin
     IntToHex( GetBValue( Cor ), 2 );
 end;
 
+procedure TfrmMain.chkTagFormChange(Sender: TObject);
+begin
+     if chkTagForm.Checked then
+     begin
+          cbbTemplate.Enabled:=true;
+          cbbTheme.Enabled:=true;
+          edtDataType.Enabled:=true;
+          edtNome.Enabled:=true;
+          edtTitle.Enabled:=true;
+     end
+     else
+     begin
+          cbbTemplate.Enabled:=false;
+          cbbTheme.Enabled:=false;
+          edtDataType.Enabled:=false;
+          edtNome.Enabled:=false;
+          edtTitle.Enabled:=false;
+     end;
+end;
+
+procedure TfrmMain.cbbThemeChange(Sender: TObject);
+begin
+  if cbbTheme.ItemIndex <> 1 then
+     frmMain.Color:=$004E4E4E
+  else
+     frmMain.Color:=clWhite;
+end;
+
 end.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
