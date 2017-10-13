@@ -17,9 +17,28 @@ type
     chkTagForm: TCheckBox;
     cbbTemplate: TComboBox;
     cbbTheme: TComboBox;
+    hello: TCustomPage;
+    CustomPage2: TCustomPage;
     edtDataType: TEdit;
     edtTitle: TEdit;
     edtNome: TEdit;
+    SDK3Button1: TSDK3Button;
+    SDK3ComboBox1: TSDK3ComboBox;
+    SDK3Edit1: TSDK3Edit;
+    SDK3Edit2: TSDK3Edit;
+    SDK3Edit3: TSDK3Edit;
+    SDK3Edit4: TSDK3Edit;
+    SDK3FlowLayout1: TSDK3FlowLayout;
+    SDK3FlowPart1: TSDK3FlowPart;
+    SDK3FlowPart2: TSDK3FlowPart;
+    SDK3FlowPart3: TSDK3FlowPart;
+    SDK3FlowPart4: TSDK3FlowPart;
+    SDK3Layout1: TSDK3Layout;
+    SDK3Layout2: TSDK3Layout;
+    SDK3Layout3: TSDK3Layout;
+    SDK3RichEdit1: TSDK3RichEdit;
+    SDK3ScrollBox1: TSDK3ScrollBox;
+    SDK3TabControl1: TSDK3TabControl;
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
     ToolButton2: TToolButton;
@@ -30,7 +49,7 @@ type
     procedure cbbThemeChange(Sender: TObject);
     procedure chkTagFormChange(Sender: TObject);
     function TColorToHex(Cor: TColor): string;
-    function Replaces(s: string): String;
+    function Replaces(s: string; tags: String): String;
     function Aligns(item: TWinControl): String;
     function AlignsNotWinControl(itemA: TAlign; item: TControl): String;
     function Fonts(item: TFont): String;
@@ -46,10 +65,21 @@ type
     function MakeFlowPart(item: TSDK3FlowPart): String;
     function MakeImageCheckBox(item: TSDK3ImageCheckBox): String;
     function MakeLabel(item: TSDK3Label): String;
+    function MakeProgressBar(item: TSDK3ProgressBar): String;
+    function MakeRadioButton(item: TSDK3RadioButton): String;
+    function MakeTabControl(item: TSDK3TabControl): String;
+    function MakeTab(item: TCustomPage): String;
+    function MakeRichEdit(item: TSDK3RichEdit): String;
+    function MakeScrollBox(item: TSDK3ScrollBox): String;
 
     procedure FormCreate(Sender: TObject);
     procedure Finalizar(Sender: TObject);
     function geraTags(comp: TComponent; memo: TMemo): String;
+    function PanXpan(comp: TComponent): String;
+    function IdentarXMLorHTML( s: String): String;
+
+    function xMLE(S: String): String;
+
   private
     { private declarations }
   public
@@ -69,185 +99,271 @@ function TfrmMain.MakeButton(item: TSDK3Button): String;
 var
   s: String;
 begin
-     s := '<button text="' + item.Caption + '" enabled="' + LowerCase(booltostr(item.Enabled)) +
-     '" hint="' + item.Hint + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
-     LowerCase(booltostr(item.Visible)) + '" '+#13+#9+#9+' fontColor="#' + TColorToHex(item.Font.Color) +
-     '" fontFamily="' + item.Font.Name + '" fontSize="' + inttostr(item.Font.Size);
+     s := 'text="' + xMLE(item.Caption) + '" enabled="' + LowerCase(booltostr(item.Enabled)) +
+     '" hint="' + xMLE(item.Hint) + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
+     LowerCase(booltostr(item.Visible)) + '" fontColor="#' + TColorToHex(item.Font.Color) +
+     '" fontFamily="' + xMLE(item.Font.Name) + '" fontSize="' + inttostr(item.Font.Size);
 
-     s := s + '"' + Fonts(item.Font)+#13+#9+#9;
-     s := s + ' ' + Aligns(item) + '/>';
+     s := s + '"' + Fonts(item.Font);
+     s := s + ' ' + Aligns(item);
 
-     result := Replaces(s);
+     result := Replaces(s, '<button ');
 end;
 
 function TfrmMain.MakeColorComboBox(item: TSDK3ColorComboBox): String;
 var
   s: String;
 begin
-     s := '<colorComboBox color="Null" enabled="' + LowerCase(booltostr(item.Enabled)) +
-     '" hint="' + item.Hint + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
-     LowerCase(booltostr(item.Visible)) + '" field="' + item.Field + '" '+#13+#9+#9;
+     s := 'color="Null" enabled="' + LowerCase(booltostr(item.Enabled)) +
+     '" hint="' + xMLE(item.Hint) + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
+     LowerCase(booltostr(item.Visible)) + '" field="' + xMLE(item.Field) + '" ';
 
-     s := s + ' ' + Aligns(item) + '/>';
-     result := Replaces(s);
+     s := s + ' ' + Aligns(item);
+     result := Replaces(s, '<colorComboBox ');
 end;
 
 function TfrmMain.MakeComboBox(item: TSDK3ComboBox): String;
 var
   s: String;
 begin
-     s := '<comboBox enabled="' + LowerCase(booltostr(item.Enabled)) +
-     '" hint="' + item.Hint + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
-     LowerCase(booltostr(item.Visible)) + '" field="' + item.Field + '" '+#13+#9+#9 +
+     s := 'enabled="' + LowerCase(booltostr(item.Enabled)) +
+     '" hint="' + xMLE(item.Hint) + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
+     LowerCase(booltostr(item.Visible)) + '" field="' + xMLE(item.Field) + '" ' +
      'fontColor="#' + TColorToHex(item.Font.Color) +
-     '" fontFamily="' + item.Font.Name + '" fontSize="' + inttostr(item.Font.Size) + '"'+
-     ' items="' + item.Items + '" values="' + item.values + '" value="' + item.value+'" '+#13+#9+#9;
+     '" fontFamily="' + xMLE(item.Font.Name) + '" fontSize="' + inttostr(item.Font.Size) + '"'+
+     ' items="' + item.Items + '" values="' + item.values + '" value="' + item.value + '" ';
 
      s := s + Fonts(item.Font);
-     s := s + ' ' + Aligns(item) + '/>';
-     result := Replaces(s);
+     s := s + ' ' + Aligns(item);
+     result := Replaces(s, '<comboBox ');
 end;
 
 function TfrmMain.MakeCheckBox(item: TSDK3CheckBox): String;
 var
   s: String;
 begin
-     s := '<checkBox text="' + item.Caption + '" checked="' + LowerCase(booltostr(item.Checked)) +
+     s := 'text="' + xMLE(item.Caption) + '" checked="' + LowerCase(booltostr(item.Checked)) +
      '" enabled="' + LowerCase(booltostr(item.Enabled)) +
-     '" hint="' + item.Hint + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
-     LowerCase(booltostr(item.Visible)) + '" field="' + item.Field + '"'+
-     'fontColor="#' + TColorToHex(item.Font.Color) +
-     '" fontFamily="' + item.Font.Name + '" fontSize="' + inttostr(item.Font.Size) + '" '+#13+#9+#9;
+     '" hint="' + xMLE(item.Hint) + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
+     LowerCase(booltostr(item.Visible)) + '" field="' + xMLE(item.Field) + '"'+
+     ' fontColor="#' + TColorToHex(item.Font.Color) +
+     '" fontFamily="' + xMLE(item.Font.Name) + '" fontSize="' + inttostr(item.Font.Size) + '" ';
 
      s := s + Fonts(item.Font);
-     s := s + ' ' + Aligns(item) + '/>';
-     result := Replaces(s);
+     s := s + ' ' + Aligns(item);
+     result := Replaces(s, '<checkBox ');
 end;
 
 function TfrmMain.MakeEdit(item: TSDK3Edit): String;
 var
   s: String;
 begin
-     s := '<edit text="' + item.Caption + '" enabled="' + LowerCase(booltostr(item.Enabled)) +
-     '" hint="' + item.Hint + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
-     LowerCase(booltostr(item.Visible)) + '" field="' + item.Field + '" '+
+     s := 'text="' + xMLE(item.Caption) + '" enabled="' + LowerCase(booltostr(item.Enabled)) +
+     '" hint="' + xMLE(item.Hint) + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
+     LowerCase(booltostr(item.Visible)) + '" field="' + xMLE(item.Field) + '" '+
      'fontColor="#' + TColorToHex(item.Font.Color) +
-     '" fontFamily="' + item.Font.Name + '" fontSize="' + inttostr(item.Font.Size) + '"'+#13+#9+#9+
-     'textPrompt="' + item.TextPrompt + '" transparent="' + LowerCase(booltostr(item.Transparent))+
+     '" fontFamily="' + xMLE(item.Font.Name) + '" fontSize="' + inttostr(item.Font.Size) + '" '+
+     'textPrompt="' + xMLE(item.TextPrompt) + '" transparent="' + LowerCase(booltostr(item.Transparent))+
      '" isPasswordEdit="' + LowerCase(booltostr(item.IsPasswordEdit)) + '" min="' + floattostr(item.Min) +
      '" max="' + floattostr(item.Max) + '" decimalPlaces="'+ inttostr(item.DecimalPlaces) + '" asNumber="'+
-     floattostr(item.asNumber)+'"'+#13+#9+#9;
+     floattostr(item.asNumber)+'" ';
 
      s := s + Fonts(item.Font);
-     s := s + ' ' + Aligns(item) + '/>';
-     result := Replaces(s);
+     s := s + ' ' + Aligns(item);
+     result := Replaces(s, '<edit ');
 end;
 
 function TfrmMain.MakeFlowLayout(item: TSDK3FlowLayout): String;
 var
   s: String;
 begin
-     s := '<flowLayout enabled="' + LowerCase(booltostr(item.Enabled)) +
-     '" hint="' + item.Hint + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
-     LowerCase(booltostr(item.Visible)) + '" '+#13+#9+#9 +
+     s := 'enabled="' + LowerCase(booltostr(item.Enabled)) +
+     '" hint="' + xMLE(item.Hint) + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
+     LowerCase(booltostr(item.Visible)) + '" ' +
      'autoHeight="' + LowerCase(booltostr(item.AutoHeight)) + '" maxControlsPerLine="' +
      inttostr(item.MaxControlsPerLine) + '" maxColumns="' + inttostr(item.MaxColumns)+
-     '" lineSpacing="' + floattostr(item.LineSpacing) + '" '+#13+#9+#9+'contentWidth="' +
+     '" lineSpacing="' + floattostr(item.LineSpacing) + '" '+'contentWidth="' +
      floattostr(item.ContentWidth) + '" contentHeight="' + floattostr(item.ContentHeight) +
-     '" frameStyle="' + item.FrameStyle + '" frameRegion="' + item.FrameRegion +'"'+#13+#9+#9;
+     '" frameStyle="' + xMLE(item.FrameStyle) + '" frameRegion="' + xMLE(item.FrameRegion) +'"';
 
-     s := s + ' ' + Aligns(item) + '>';
-     result := Replaces(s);
+     s := s + ' ' + Aligns(item);
+     result := Replaces(s, '<flowLayout ');
 end;
 
 function TfrmMain.MakeImage(item: TSDK3Image): String;
 var
   s: String;
 begin
-     s := '<image enabled="' + LowerCase(booltostr(item.Enabled)) +
-     '" hint="' + item.Hint + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
-     LowerCase(booltostr(item.Visible)) + '" '+#13+#9+#9 +
+     s := 'enabled="' + LowerCase(booltostr(item.Enabled)) +
+     '" hint="' + xMLE(item.Hint) + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
+     LowerCase(booltostr(item.Visible)) + '" ' +
      ' center="' + LowerCase(booltostr(item.Center)) + '" editable="' +
-     LowerCase(booltostr(item.Editable)) + '" field="' + item.Field + '" '+
+     LowerCase(booltostr(item.Editable)) + '" field="' + xMLE(item.Field) + '" '+
      'naturalWidth="' + floattostr(item.NaturalWidth) + '" naturalHeight="' +
      floattostr(item.NaturalHeight) + '" optimize="' +
      LowerCase(booltostr(item.Optimize)) + '" showProgress="' +
-     LowerCase(booltostr(item.ShowProgress)) + '" src="' + item.Src + '" '+#13+#9+#9 +
-     'URLWhileLoading="' + item.URLWhileLoading + '" ';
+     LowerCase(booltostr(item.ShowProgress)) + '" src="' + xMLE(item.Src) + '" ' +
+     'URLWhileLoading="' + xMLE(item.URLWhileLoading) + '" ';
 
-     s := s + ' ' + AlignsNotWinControl(item.Align, item) + '/>';
-     result := Replaces(s);
+     s := s + ' ' + AlignsNotWinControl(item.Align, item);
+     result := Replaces(s, '<image ');
 end;
 
 function TfrmMain.MakeLayout(item: TSDK3Layout): String;
 var
   s: String;
 begin
-     s := '<layout enabled="' + LowerCase(booltostr(item.Enabled)) +
-     '" hint="' + item.Hint + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
-     LowerCase(booltostr(item.Visible)) + '" '+#13+#9+#9 +
-     'frameStyle="' + item.FrameStyle + '" frameRegion="' + item.FrameRegion +'" ';
+     s := 'enabled="' + LowerCase(booltostr(item.Enabled)) +
+     '" hint="' + xMLE(item.Hint) + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
+     LowerCase(booltostr(item.Visible)) + '" ' +
+     'frameStyle="' + xMLE(item.FrameStyle) + '" frameRegion="' + xMLE(item.FrameRegion) +'" ';
 
-     s := s  + Aligns(item) + '>';
-     result := Replaces(s);
+     s := s  + Aligns(item);
+     result := Replaces(s, '<layout ');
 end;
 
 function TfrmMain.MakeFlowPart(item: TSDK3FlowPart): String;
 var
   s: String;
 begin
-     s := '<flowPart enabled="' + LowerCase(booltostr(item.Enabled)) +
-     '" hint="' + item.Hint + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
-     LowerCase(booltostr(item.Visible)) + '" '+#13+#9+#9 +
-     'frameStyle="' + item.FrameStyle + '" frameRegion="' + item.FrameRegion +
+     s := 'enabled="' + LowerCase(booltostr(item.Enabled)) +
+     '" hint="' + xMLE(item.Hint) + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
+     LowerCase(booltostr(item.Visible)) + '" ' +
+     'frameStyle="' + xMLE(item.FrameStyle) + '" frameRegion="' + xMLE(item.FrameRegion) +
      '" minWidth="' + floattostr(item.MinWidth) +'" maxWidth="' + floattostr(item.MaxWidth) +
      '" minScaledWidth="'+ floattostr(item.MinScaledWidth) + '" maxScaledWidth="' +
      floattostr(item.MaxScaledWidth) + '" avoidScale="' + LowerCase(booltostr(item.AvoidScale)) +
-     '" ' + #13+#9+#9 + ' stepSizes="' + item.StepSizes + '" adjustHeightToLine="' +
+     '" stepSizes="' + xMLE(item.StepSizes) + '" adjustHeightToLine="' +
      LowerCase(booltostr(item.adjustHeightToLine)) + '" ' ;
 
-     s := s  + Aligns(item) + '>';
-     result := Replaces(s);
+     s := s  + Aligns(item);
+     result := Replaces(s, '<flowPart ');
 end;
 
 function TfrmMain.MakeImageCheckBox(item: TSDK3ImageCheckBox): String;
 var
   s: String;
 begin
-     s := '<imageCheckBox checked="' + LowerCase(booltostr(item.Checked)) +
+     s := 'checked="' + LowerCase(booltostr(item.Checked)) +
      '" enabled="' + LowerCase(booltostr(item.Enabled)) +
-     '" hint="' + item.Hint + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
-     LowerCase(booltostr(item.Visible)) + '" field="' + item.Field + '" '+#13+#9+#9+
-     ' checkedImage="' + item.CheckedImage + '" uncheckedImage="' + item.UncheckedImage +
+     '" hint="' + xMLE(item.Hint) + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
+     LowerCase(booltostr(item.Visible)) + '" field="' + xMLE(item.Field) + '" '+
+     ' checkedImage="' + xMLE(item.CheckedImage) + '" uncheckedImage="' + xMLE(item.UncheckedImage) +
      '" optimize="'+ LowerCase(booltostr(item.Optimize)) + '" autoChange="' +
      LowerCase(booltostr(item.AutoChange)) + '" ';
 
-     s := s  + AlignsNotWinControl(item.Align, item) + '/>';
-     result := Replaces(s);
+     s := s  + AlignsNotWinControl(item.Align, item);
+     result := Replaces(s, '<imageCheckBox ');
 end;
 
 function TfrmMain.MakeLabel(item: TSDK3Label): String;
 var
   s: String;
 begin
-     s := '<label text="' + item.Caption + '" enabled="' + LowerCase(booltostr(item.Enabled)) +
-     '" hint="' + item.Hint + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
-     LowerCase(booltostr(item.Visible)) + '" field="' + item.Field + '" '+
+     s := 'text="' + xMLE(item.Caption) + '" enabled="' + LowerCase(booltostr(item.Enabled)) +
+     '" hint="' + xMLE(item.Hint) + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
+     LowerCase(booltostr(item.Visible)) + '" field="' + xMLE(item.Field) + '" '+
      'fontColor="#' + TColorToHex(item.Font.Color) +
-     '" fontFamily="' + item.Font.Name + '" fontSize="' + inttostr(item.Font.Size) +
+     '" fontFamily="' + xMLE(item.Font.Name) + '" fontSize="' + inttostr(item.Font.Size) +
      '" autoSize="' + LowerCase(booltostr(item.AutoSize)) + '" ';
 
      s := s + Fonts(item.Font);
-     s := s + ' ' + AlignsNotWinControl(item.Align, item) + '/>';
-     result := Replaces(s);
+     s := s + ' ' + AlignsNotWinControl(item.Align, item);
+     result := Replaces(s, '<label ');
+end;
+
+function TfrmMain.MakeProgressBar(item: TSDK3ProgressBar): String;
+var
+  s: String;
+begin
+     s := 'enabled="' + LowerCase(booltostr(item.Enabled)) +
+     '" hint="' + xMLE(item.Hint) + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
+     LowerCase(booltostr(item.Visible)) + '" ' +
+     'position="' + floattostr(item.Position) + '" min="' + floattostr(item.Min) +
+     '" max="' + floattostr(item.Max) + '" mouseGlow="' + LowerCase(booltostr(item.mouseGlow)) +
+     '" color="#' + TColorToHex(item.Color) + '" field="' + xMLE(item.Field) + '" ';
+
+     s := s  + Aligns(item);
+     result := Replaces(s, '<progressBar ');
+end;
+
+function TfrmMain.MakeRadioButton(item: TSDK3RadioButton): String;
+var
+  s: String;
+begin
+     s := 'text="' + xMLE(item.Caption) + '" checked="' + LowerCase(booltostr(item.Checked)) +
+     '" enabled="' + LowerCase(booltostr(item.Enabled)) +
+     '" hint="' + xMLE(item.Hint) + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
+     LowerCase(booltostr(item.Visible)) + '" field="' + xMLE(item.Field) + '"'+
+     ' fontColor="#' + TColorToHex(item.Font.Color) +
+     '" fontFamily="' + xMLE(item.Font.Name) + '" fontSize="' + inttostr(item.Font.Size) + '" '+
+     ' groupName="' + xMLE(item.GroupName) + '" fieldValue="' + xMLE(item.FieldValue) +'" ';
+
+     s := s + Fonts(item.Font);
+     s := s + ' ' + Aligns(item);
+     result := Replaces(s, '<radioButton ');
+end;
+
+function TfrmMain.MakeTabControl(item: TSDK3TabControl): String;
+var
+  s: String;
+begin
+     s := 'enabled="' + LowerCase(booltostr(item.Enabled)) +
+     '" hint="' + xMLE(item.Hint) + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
+     LowerCase(booltostr(item.Visible)) + '" '+
+     'tabIndex="' + inttostr(item.TabIndex) + '" ';
+
+     s := s  + Aligns(item);
+     result := Replaces(s, '<tabControl ');
+end;
+
+function TfrmMain.MakeTab(item: TCustomPage): String;
+var
+  s: String;
+begin
+     s := 'enabled="' + LowerCase(booltostr(item.Enabled)) +
+     '" hint="' + xMLE(item.Hint) + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
+     LowerCase(booltostr(item.Visible)) + '" '+
+     'title="' + xMLE(item.Name) + '" ';
+
+     s := s  + Aligns(item);
+     result := Replaces(s, '<tab ');
+end;
+
+function TfrmMain.MakeRichEdit(item: TSDK3RichEdit): String;
+var
+  s: String;
+begin
+     s := 'enabled="' + LowerCase(booltostr(item.Enabled)) +
+     '" hint="' + xMLE(item.Hint) + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
+     LowerCase(booltostr(item.Visible)) + '" '+
+     'field="' + xMLE(item.Field) + '" readyOnly="'+LowerCase(booltostr(item.ReadyOnly)) +
+     '" backgroundColor="#' + TColorToHex(item.BackgroundColor) +
+     '" defaultFontColor="#' + TColorToHex(item.DefaultFontColor) +
+     '" defaultFontSize="' + floattostr(item.DefaultFontSize) +
+     '" showToolbar="' +LowerCase(booltostr(item.ShowToolbar)) +
+     '" hideSelection="' + LowerCase(booltostr(item.HideSelection)) + '" ';
+
+     s := s  + Aligns(item);
+     result := Replaces(s, '<richEdit ');
+end;
+
+function TfrmMain.MakeScrollBox(item: TSDK3ScrollBox): String;
+var
+  s: String;
+begin
+     s := 'enabled="' + LowerCase(booltostr(item.Enabled)) +
+     '" hint="' + xMLE(item.Hint) + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
+     LowerCase(booltostr(item.Visible)) + '" ';
+
+     s := s  + Aligns(item);
+     result := Replaces(s, '<scrollBox ');
 end;
 
 procedure TfrmMain.Finalizar(Sender: TObject);
 var
-  i, j, c, lyt: integer;
   memo: TMemo;
   svdlg: TSaveDialog;
-  memos: array of TMemo;
 begin
 
      memo := TMemo.Create(self);
@@ -261,101 +377,95 @@ begin
      begin
        memo.Lines.Add('<?xml version="1.0" encoding="UTF-8"?>'+#13+#9);
        memo.Lines.Add('<form formType="'+cbbTemplate.Text+'" dataType="'+edtDataType.Text+'" ');
-       memo.Lines.Add('title="'+edtTitle.Text+'" name="'+edtNome.Text+'" theme="'+cbbTheme.Text+'">'+#13);
+       memo.Lines.Add('title="'+edtTitle.Text+'" name="'+edtNome.Text+'" theme="'+cbbTheme.Text+'" ');
+       memo.Text:= memo.Text + Aligns(frmMain) + '>' + #13;
      end;
 
-     lyt := 0;
-     for i := 0 to ComponentCount - 1 do
-     begin
-          if (Components[i] is TSDK3FlowLayout) or
-          (Components[i] is TSDK3Layout) or
-          (Components[i] is TSDK3FlowPart) then
-          begin
-               lyt := lyt + 1;
-          end;
-     end;
-
-     if lyt = 0 then
-     begin
-       for i := 0 to ComponentCount - 1 do
-       begin
-            memo.text := geraTags(Components[i], memo);
-       end;
-     end
-     else
-     begin
-          setLength(memos, lyt);
-          for i := 0 to lyt do
-          begin
-               memos[i] := TMemo.Create(self);
-               memos[i].Visible := false;
-               memos[i].Clear;
-          end;
-
-          c := 0;
-          for i := 0 to ComponentCount - 1 do
-          begin
-               if (Components[i] is TSDK3Layout) then
-               begin
-                    memos[c].text := geraTags(Components[i], memos[c]);
-                    for j := 0 to ComponentCount - 1 do
-                    begin
-                         if Components[j].GetParentComponent = Components[i] then
-                            memos[c].text := geraTags(Components[j], memos[c]);
-                    end;
-                    memos[c].lines.Add(#13+#9+'</layout>');
-                    c := c + 1;
-               end
-               else
-               if (Components[i] is TSDK3FlowLayout) then
-               begin
-                    memos[c].text := geraTags(Components[i], memos[c]);
-                    for j := 0 to ComponentCount - 1 do
-                    begin
-                         if Components[j].GetParentComponent = Components[i] then
-                            memos[c].text := geraTags(Components[j], memos[c]);
-                    end;
-                    memos[c].lines.Add(#13+#9+'</flowLayout>');
-                    c := c + 1;
-               end
-               else
-               if (Components[i] is TSDK3FlowPart) then
-               begin
-                    memos[c].text := geraTags(Components[i], memos[c]);
-                    for j := 0 to ComponentCount - 1 do
-                    begin
-                         if Components[j].GetParentComponent = Components[i] then
-                            memos[c].text := geraTags(Components[j], memos[c]);
-                    end;
-                    memos[c].lines.Add(#13+#9+'</flowPart>');
-                    c := c + 1;
-               end
-               else
-               if (Components[i].GetParentComponent = frmMain) then
-               begin
-                    memo.text := geraTags(Components[i], memo);
-               end;
-          end;
-
-          for i := 0 to lyt do
-          begin
-               memo.lines.Add(memos[i].text);
-               memos[i].free;
-          end;
-     end;
+     memo.Lines.Add(panXpan(frmMain));
 
      if chkTagForm.Checked then
      begin
        memo.Lines.Add(#13+'</form>');
      end;
 
+     memo.Text := IdentarXMLorHTML(memo.text);
+
      if svdlg.Execute then
      begin
           memo.Lines.SaveToFile(svdlg.FileName);
+          showmessage('Código gerado!');
      end;
      memo.free;
      svdlg.Free;
 
+
+end;
+
+function TfrmMain.PanXpan(comp: TComponent): String;
+var
+  i: integer;
+  s: string;
+  memo: TMemo;
+begin
+
+     for i := Self.ComponentCount-1 downto 0 do
+     begin
+          if (Self.Components[i].GetParentComponent = comp) then
+          begin
+
+              if (Self.Components[i] is TSDK3ScrollBox) then
+              begin
+                   s := s + MakeScrollBox(Components[i] as TSDK3ScrollBox);
+                   s := s + panXpan(Components[i]);
+                   s := s + '</scrollBox>';
+              end
+              else
+              if (Self.Components[i] is TCustomPage) then
+              begin
+                   s := s + MakeTab(Components[i] as TCustomPage);
+                   s := s + panXpan(Components[i]);
+                   s := s + '</tab>';
+              end
+              else
+              if (Self.Components[i] is TSDK3TabControl) then
+              begin
+                   s := s + MakeTabControl(Components[i] as TSDK3TabControl);
+                   s := s + panXpan(Components[i]);
+                   s := s +  '</tabControl>';
+              end
+              else
+              if (Self.Components[i] is TSDK3FlowPart) then
+              begin
+                   s := s + MakeFlowPart(Components[i] as TSDK3FlowPart);
+                   s := s + panXpan(Components[i]);
+                   s := s +  '</flowPart>';
+              end
+              else
+              if (Self.Components[i] is TSDK3FlowLayout) then
+              begin
+                   s := s + MakeFlowLayout(Components[i] as TSDK3FlowLayout);
+                   s := s + panXpan(Components[i]);
+                   s := s +  '</flowLayout>';
+              end
+              else
+              if (Self.Components[i] is TSDK3Layout) then
+              begin
+                     s := s + MakeLayout(Components[i] as TSDK3Layout);
+                     s := s + panXpan(Components[i]);
+                     s := s + '</layout>';
+              end
+              else
+              begin
+                   memo := TMemo.Create(self);
+                   memo.visible := false;
+                   memo.text := s;
+                   s := geraTags(Components[i], memo);
+                   memo.free;
+              end;
+
+          end;
+     end;
+     result := s;
 end;
 
 function TfrmMain.geraTags(comp: TComponent; memo: TMemo): String;
@@ -424,6 +534,24 @@ begin
          begin
                 memo.Lines.add(#9 + MakeLabel((comp as TSDK3Label)));
                 memo.lines.add('');
+         end
+         else
+         if comp is TSDK3ProgressBar then
+         begin
+                memo.Lines.add(#9 + MakeProgressBar((comp as TSDK3ProgressBar)));
+                memo.lines.add('');
+         end
+         else
+         if comp is TSDK3RadioButton then
+         begin
+                memo.Lines.add(#9 + MakeRadioButton((comp as TSDK3RadioButton)));
+                memo.lines.add('');
+         end
+         else
+         if comp is TSDK3RichEdit then
+         begin
+                memo.Lines.add(#9 + MakeRichEdit((comp as TSDK3RichEdit)));
+                memo.lines.add('');
          end;
          result := memo.text;
 end;
@@ -435,9 +563,10 @@ var
 begin
   menuBar := TmainMenu.Create(frmMain);
   item := TMenuItem.Create(menuBar);
-  item.Caption:='GERAR FICHA!';
+  item.Caption :='GERAR FICHA!';
   item.OnClick := @Finalizar;
   menuBar.Items.Add(item);
+
 end;
 
 function TfrmMain.Fonts(item: TFont): String;
@@ -469,7 +598,11 @@ begin
      if item.Align <> alClient then
      begin
           if item.Align = alNone then
-               f := 'left="' + inttostr(item.Left) + '" top="' + inttostr(item.top) +
+               if (item.GetParentComponent = frmMain) then
+                  f := 'left="' + inttostr(item.Left) + '" top="' + inttostr(item.top - 26) +
+               '" width="' + inttostr(item.Width) + '" height="' + inttostr(item.Height) + '"'
+               else
+                  f := 'left="' + inttostr(item.Left) + '" top="' + inttostr(item.top) +
                '" width="' + inttostr(item.Width) + '" height="' + inttostr(item.Height) + '"'
           else
           begin
@@ -501,7 +634,11 @@ begin
      if itemA <> alClient then
      begin
           if itemA = alNone then
-               f := 'left="' + inttostr(item.Left) + '" top="' + inttostr(item.top - 26) +
+               if (item.GetParentComponent = frmMain) then
+                  f := 'left="' + inttostr(item.Left) + '" top="' + inttostr(item.top - 26) +
+               '" width="' + inttostr(item.Width) + '" height="' + inttostr(item.Height) + '"'
+               else
+                  f := 'left="' + inttostr(item.Left) + '" top="' + inttostr(item.top) +
                '" width="' + inttostr(item.Width) + '" height="' + inttostr(item.Height) + '"'
           else
           begin
@@ -525,8 +662,17 @@ begin
      result := f;
 end;
 
-function TfrmMain.Replaces(s: string): String;
+function TfrmMain.Replaces(s: string; tags: String): String;
+var
+  tagF: String;
 begin
+
+     if (tags = '<layout ') or (tags = '<flowLayout ') or (tags = '<flowPart ') or
+     (tags = '<tabControl ') or (tags = '<tab ') or (tags = '<scrollBox ') then
+          tagF := '>'
+     else
+         tagF := '/>';
+
      s := stringReplace(s, 'enabled="0"', 'enabled="false"', [rfReplaceALL]);
      s := stringReplace(s, 'enabled="-1"', '', [rfReplaceALL]);
      s := stringReplace(s, 'visible="0"', 'visible="false"', [rfReplaceALL]);
@@ -547,8 +693,16 @@ begin
      s := stringReplace(s, 'showProgress="0"', 'showProgress="true"', [rfReplaceALL]);
      s := stringReplace(s, 'autoChange="-1"', 'autoChange="false"', [rfReplaceALL]);
      s := stringReplace(s, 'autoChange="0"', '', [rfReplaceALL]);
-     s := stringReplace(s, 'autoSize="-1"', '', [rfReplaceALL]);
-     s := stringReplace(s, 'autoSize="0"', 'autoSize="true"', [rfReplaceALL]);
+     s := stringReplace(s, 'autoSize="-1"', 'autoSize="true"', [rfReplaceALL]);
+     s := stringReplace(s, 'autoSize="0"', '', [rfReplaceALL]);
+     s := stringReplace(s, 'mouseGlow="-1"', 'mouseGlow="false"', [rfReplaceALL]);
+     s := stringReplace(s, 'mouseGlow="0"', '', [rfReplaceALL]);
+     s := stringReplace(s, 'readyOnly="0"', '', [rfReplaceALL]);
+     s := stringReplace(s, 'readyOnly="-1"', 'readyOnly="true"', [rfReplaceALL]);
+     s := stringReplace(s, 'showToolbar="0"', 'showToolbar="false"', [rfReplaceALL]);
+     s := stringReplace(s, 'showToolbar="-1"', '', [rfReplaceALL]);
+     s := stringReplace(s, 'hideSelection="0"', 'hideSelection="false"', [rfReplaceALL]);
+     s := stringReplace(s, 'hideSelection="-1"', '', [rfReplaceALL]);
 
      s := stringReplace(s, 'hint=""', '', [rfReplaceALL]);
      s := stringReplace(s, 'fontSize="0"', '', [rfReplaceALL]);
@@ -558,11 +712,16 @@ begin
      s := stringReplace(s, 'items=""', 'items="{}"', [rfReplaceALL]);
      s := stringReplace(s, 'values=""', 'values="{}"', [rfReplaceALL]);
      s := stringReplace(s, 'value=""', '', [rfReplaceALL]);
+     s := stringReplace(s, 'textPrompt=""', '', [rfReplaceALL]);
 
      s := stringReplace(s, 'tabOrder="0"', '', [rfReplaceALL]);
+     s := stringReplace(s, 'min="0"', '', [rfReplaceALL]);
+     s := stringReplace(s, 'max="0"', '', [rfReplaceALL]);
+     s := stringReplace(s, 'decimalPlaces="0"', '', [rfReplaceALL]);
+     s := stringReplace(s, 'asNumber="0"', '', [rfReplaceALL]);
      s := stringReplace(s, 'autoHeight="0"', '', [rfReplaceALL]);
      s := stringReplace(s, 'maxControlsPerLine="0"', '', [rfReplaceALL]);
-     s := stringReplace(s, 'MmxColumns="0"', '', [rfReplaceALL]);
+     s := stringReplace(s, 'maxColumns="0"', '', [rfReplaceALL]);
      s := stringReplace(s, 'lineSpacing="0"', '', [rfReplaceALL]);
      s := stringReplace(s, 'contentWidth="0"', '', [rfReplaceALL]);
      s := stringReplace(s, 'contentHeight="0"', '', [rfReplaceALL]);
@@ -575,6 +734,7 @@ begin
      s := stringReplace(s, 'maxScaledWidth="0"', '', [rfReplaceALL]);
      s := stringReplace(s, 'avoidScale="0"', '', [rfReplaceALL]);
      s := stringReplace(s, 'adjustHeightToLine="0"', '', [rfReplaceALL]);
+     s := stringReplace(s, 'defaultFontSize="0"', '', [rfReplaceALL]);
 
      s := stringReplace(s, 'stepSizes=""', '', [rfReplaceALL]);
      s := stringReplace(s, 'frameStyle=""', '', [rfReplaceALL]);
@@ -582,10 +742,13 @@ begin
      s := stringReplace(s, 'URLWhileLoading=""', '', [rfReplaceALL]);
      s := stringReplace(s, 'uncheckedImage=""', '', [rfReplaceALL]);
      s := stringReplace(s, 'checkedImage=""', '', [rfReplaceALL]);
+     s := stringReplace(s, 'fieldValue=""', '', [rfReplaceALL]);
+     s := stringReplace(s, 'groupName=""', '', [rfReplaceALL]);
 
      s := stringReplace(s, '   ', ' ', [rfReplaceALL]);
      s := stringReplace(s, '  ', ' ', [rfReplaceALL]);
-     result:= s;
+
+     result:= tags+s+tagF;
 end;
 
 function TfrmMain.TColorToHex(Cor: TColor): string;
@@ -616,12 +779,78 @@ begin
      end;
 end;
 
+function TfrmMain.xMLE(S: String): String;
+begin
+
+     s := stringReplace(s, '&', '&amp;', [rfReplaceALL]);
+     s := stringReplace(s, '<', '&lt;', [rfReplaceALL]);
+     s := stringReplace(s, '>', '&gt;', [rfReplaceALL]);
+     s := stringReplace(s, '''', '&apos;', [rfReplaceALL]);
+     s := stringReplace(s, '"', '&apos;&apos;', [rfReplaceALL]);
+
+     result := s;
+end;
+
 procedure TfrmMain.cbbThemeChange(Sender: TObject);
 begin
   if cbbTheme.ItemIndex <> 1 then
      frmMain.Color:=$004E4E4E
   else
      frmMain.Color:=clWhite;
+end;
+
+function TfrmMain.IdentarXMLorHTML(s: String): String;
+var
+  i, w, lv: Integer;
+  str: String;
+begin
+     s := StringReplace(s, #$D#$A, '', [rfReplaceAll]);
+     s := StringReplace(s, #13#10, '', [rfReplaceAll]);
+     s := StringReplace(s, #13, '', [rfReplaceAll]);
+     s := StringReplace(s, #9, '', [rfReplaceAll]);
+     s := StringReplace(s, '    ', ' ', [rfReplaceAll]);
+     s := StringReplace(s, '   ', ' ', [rfReplaceAll]);
+     s := StringReplace(s, '  ', ' ', [rfReplaceAll]);
+
+     lv := 0;
+     str := '';
+     i := 1;
+     while i < Length(s) do
+     begin
+
+          if (s[i] + s[i+1]) = '</' then
+          begin
+            // str := str + #13;
+             lv := lv - 2;
+          end;
+
+          if ((s[i] + s[i+1]) = '/>') or ((s[i] + s[i+1]) = '?>') then
+          begin
+               str := str + s[i] + s[i+1] + #13;
+               for w := 1 to lv do
+                   str := str + #9;
+               i := i + 2;
+               continue;
+          end;
+
+          if s[i] = '>' then
+          begin
+             str := str + s[i] + #13 + #13;
+             lv := lv + 1;
+             for w := 1 to lv do
+                   str := str + #9;
+             i := i + 1;
+             continue;
+          end;
+
+          str := str + s[i];
+          i := i + 1;
+
+     end;
+     str := stringreplace(str, #9+'</', '</', [rfReplaceAll]);
+     str := stringreplace(str, #13+#9, #13+#13+#9, [rfReplaceAll]);
+     str := stringreplace(str, #13+#13+#13, #13+#13, [rfReplaceAll]);
+     result := str+'>';
 end;
 
 end.
