@@ -17,27 +17,50 @@ type
     chkTagForm: TCheckBox;
     cbbTemplate: TComboBox;
     cbbTheme: TComboBox;
-    hello: TCustomPage;
-    CustomPage2: TCustomPage;
+    Verso: TCustomPage;
+    Frente: TCustomPage;
     edtDataType: TEdit;
     edtTitle: TEdit;
     edtNome: TEdit;
     SDK3Button1: TSDK3Button;
-    SDK3ComboBox1: TSDK3ComboBox;
+    SDK3Button2: TSDK3Button;
+    SDK3Button3: TSDK3Button;
+    SDK3Button4: TSDK3Button;
+    SDK3CheckBox1: TSDK3CheckBox;
+    SDK3CheckBox2: TSDK3CheckBox;
+    SDK3CheckBox3: TSDK3CheckBox;
+    SDK3CheckBox5: TSDK3CheckBox;
     SDK3Edit1: TSDK3Edit;
+    SDK3Edit10: TSDK3Edit;
+    SDK3Edit11: TSDK3Edit;
     SDK3Edit2: TSDK3Edit;
     SDK3Edit3: TSDK3Edit;
     SDK3Edit4: TSDK3Edit;
-    SDK3FlowLayout1: TSDK3FlowLayout;
-    SDK3FlowPart1: TSDK3FlowPart;
-    SDK3FlowPart2: TSDK3FlowPart;
-    SDK3FlowPart3: TSDK3FlowPart;
-    SDK3FlowPart4: TSDK3FlowPart;
+    SDK3Edit5: TSDK3Edit;
+    SDK3Edit6: TSDK3Edit;
+    SDK3Edit7: TSDK3Edit;
+    SDK3Edit8: TSDK3Edit;
+    SDK3Edit9: TSDK3Edit;
+    SDK3Image1: TSDK3Image;
+    SDK3Label1: TSDK3Label;
+    SDK3Label10: TSDK3Label;
+    SDK3Label11: TSDK3Label;
+    SDK3Label12: TSDK3Label;
+    SDK3Label13: TSDK3Label;
+    SDK3Label14: TSDK3Label;
+    SDK3Label15: TSDK3Label;
+    SDK3Label16: TSDK3Label;
+    SDK3Label2: TSDK3Label;
+    SDK3Label3: TSDK3Label;
+    SDK3Label4: TSDK3Label;
+    SDK3Label5: TSDK3Label;
+    SDK3Label6: TSDK3Label;
+    SDK3Label7: TSDK3Label;
+    SDK3Label8: TSDK3Label;
+    SDK3Label9: TSDK3Label;
     SDK3Layout1: TSDK3Layout;
-    SDK3Layout2: TSDK3Layout;
-    SDK3Layout3: TSDK3Layout;
+    SDK3ProgressBar1: TSDK3ProgressBar;
     SDK3RichEdit1: TSDK3RichEdit;
-    SDK3ScrollBox1: TSDK3ScrollBox;
     SDK3TabControl1: TSDK3TabControl;
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
@@ -322,11 +345,9 @@ var
   s: String;
 begin
      s := 'enabled="' + LowerCase(booltostr(item.Enabled)) +
-     '" hint="' + xMLE(item.Hint) + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
-     LowerCase(booltostr(item.Visible)) + '" '+
+     '" hint="' + xMLE(item.Hint) + '" tabOrder="' + inttostr(item.Tag) +  '" '+
      'title="' + xMLE(item.Name) + '" ';
 
-     s := s  + Aligns(item);
      result := Replaces(s, '<tab ');
 end;
 
@@ -408,7 +429,7 @@ var
   memo: TMemo;
 begin
 
-     for i := Self.ComponentCount-1 downto 0 do
+     for i := 0 to self.Componentcount -1 do
      begin
           if (Self.Components[i].GetParentComponent = comp) then
           begin
