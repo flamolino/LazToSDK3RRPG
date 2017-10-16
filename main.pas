@@ -17,6 +17,7 @@ type
     chkTagForm: TCheckBox;
     cbbTemplate: TComboBox;
     cbbTheme: TComboBox;
+    SDK3ComboBox1: TSDK3ComboBox;
     Verso: TCustomPage;
     Frente: TCustomPage;
     edtDataType: TEdit;

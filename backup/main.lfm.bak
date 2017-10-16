@@ -623,6 +623,13 @@ object frmMain: TfrmMain
         Font.Style = [fsBold]
         Text = '0'
       end
+      object SDK3ComboBox1: TSDK3ComboBox
+        Left = 309
+        Height = 23
+        Top = 247
+        Width = 100
+        Text = 'SDK3ComboBox1'
+      end
     end
     object Verso: TCustomPage
       Left = 0

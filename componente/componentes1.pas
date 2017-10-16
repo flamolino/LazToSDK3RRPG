@@ -46,12 +46,14 @@ type
 type
   TSDK3ComboBox = class(TCustomComboBox)
   private
-    FField, FValue: String;
-    FValues, FItems: String;
+    FField, FValue, FItems: String;
+    FValues: TStringList ;
+    procedure SetValues(Value: TStringList);
   protected
 
   public
-
+    constructor Create(aOwner: TComponent); override;
+    destructor Destroy; override;
   published
     property Align;
     property Enabled;
@@ -60,9 +62,10 @@ type
     property Items: String read FItems write FItems;
     property Text;
     property Value: String read FValue write FValue;
-    property Values: String read FValues write FValues;
+    property Values: TStringList read FValues write FValues;
     property Visible;
   end;
+
 
 type
   TSDK3CheckBox = class(TCustomCheckBox)
@@ -363,7 +366,6 @@ procedure Register;
 
 implementation
 
-
 procedure Register;
 begin
   {$I componentes1_icon.lrs}
@@ -371,6 +373,24 @@ begin
   TSDK3CheckBox, TSDK3Edit, TSDK3FlowLayout, TSDK3Image, TSDK3Layout, TSDK3FlowPart,
   TSDK3ImageCheckBox, TSDK3Label, TSDK3ProgressBar, TSDK3RadioButton, TSDK3TabControl,
   TCustomPage, TSDK3RichEdit, TSDK3ScrollBox]);
+end;
+
+constructor TSDK3ComboBox.Create(aOwner: TComponent);
+begin
+     inherited;
+     FValues := TStringList.Create();
+     FValues.Clear;
+end;
+
+destructor TSDK3ComboBox.Destroy;
+begin
+     FValues.Free;
+     inherited Destroy;
+end;
+
+procedure TSDK3ComboBox.SetValues(Value: TStringList);
+begin
+     FValues.Assign(value);
 end;
 
 end.

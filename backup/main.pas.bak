@@ -17,6 +17,7 @@ type
     chkTagForm: TCheckBox;
     cbbTemplate: TComboBox;
     cbbTheme: TComboBox;
+    SDK3ComboBox1: TSDK3ComboBox;
     Verso: TCustomPage;
     Frente: TCustomPage;
     edtDataType: TEdit;
@@ -345,8 +346,7 @@ var
   s: String;
 begin
      s := 'enabled="' + LowerCase(booltostr(item.Enabled)) +
-     '" hint="' + xMLE(item.Hint) + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
-     LowerCase(booltostr(item.Visible)) + '" '+
+     '" hint="' + xMLE(item.Hint) + '" tabOrder="' + inttostr(item.Tag) +  '" '+
      'title="' + xMLE(item.Name) + '" ';
 
      result := Replaces(s, '<tab ');
