@@ -623,6 +623,34 @@ object frmMain: TfrmMain
         Font.Style = [fsBold]
         Text = '0'
       end
+      object SDK3ComboBox1: TSDK3ComboBox
+        Left = 208
+        Height = 23
+        Top = 176
+        Width = 100
+        Field = 'test'
+        Items.Strings = (
+          'rafa'
+          'araujo'
+          'a'
+          'p'
+          'c'
+          't'
+          '7'
+          'd'
+        )
+        Text = 'SDK3ComboBox1'
+        Values.Strings = (
+          '1'
+          '2'
+          '3'
+          '4'
+          '5'
+          '6'
+          '7'
+          '8'
+        )
+      end
     end
     object Verso: TCustomPage
       Left = 0

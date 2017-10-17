@@ -46,11 +46,11 @@ type
 type
   TSDK3ComboBox = class(TCustomComboBox)
   private
-    FField, FValue, FItems: String;
-    FValues: TStringList ;
-    procedure SetValues(Value: TStringList);
+    FField, FValue: String;
+    FValues, FItems: TStrings ;
   protected
-
+    procedure SetValues(const Value: TStrings); virtual;
+    procedure SetItems(const Value: TStrings); virtual;
   public
     constructor Create(aOwner: TComponent); override;
     destructor Destroy; override;
@@ -59,10 +59,10 @@ type
     property Enabled;
     property Field: String read FField write FField;
     property Font;
-    property Items: String read FItems write FItems;
+    property Items: TStrings read FItems write SetItems;
     property Text;
     property Value: String read FValue write FValue;
-    property Values: TStringList read FValues write FValues;
+    property Values: TStrings read FValues write SetValues;
     property Visible;
   end;
 
@@ -378,17 +378,25 @@ end;
 constructor TSDK3ComboBox.Create(aOwner: TComponent);
 begin
      inherited;
+     FItems := TStringList.Create();
+     FItems.Clear;
      FValues := TStringList.Create();
      FValues.Clear;
 end;
 
 destructor TSDK3ComboBox.Destroy;
 begin
+     FItems.Free;
      FValues.Free;
      inherited Destroy;
 end;
 
-procedure TSDK3ComboBox.SetValues(Value: TStringList);
+procedure TSDK3ComboBox.SetItems(const Value: TStrings);
+begin
+     FItems.Assign(value);
+end;
+
+procedure TSDK3ComboBox.SetValues(const Value: TStrings);
 begin
      FValues.Assign(value);
 end;

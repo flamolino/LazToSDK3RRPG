@@ -101,8 +101,8 @@ type
     function geraTags(comp: TComponent; memo: TMemo): String;
     function PanXpan(comp: TComponent): String;
     function IdentarXMLorHTML( s: String): String;
-
     function xMLE(S: String): String;
+    function makeValuesOrItens(s: String): String;
 
   private
     { private declarations }
@@ -155,7 +155,7 @@ begin
      LowerCase(booltostr(item.Visible)) + '" field="' + xMLE(item.Field) + '" ' +
      'fontColor="#' + TColorToHex(item.Font.Color) +
      '" fontFamily="' + xMLE(item.Font.Name) + '" fontSize="' + inttostr(item.Font.Size) + '"'+
-     ' items="' + item.Items + '" values="' + item.values + '" value="' + item.value + '" ';
+     ' items="' + makeValuesOrItens(item.Items.Text) + '" values="' + (item.values.Text) + '" value="' + item.value + '" ';
 
      s := s + Fonts(item.Font);
      s := s + ' ' + Aligns(item);
@@ -873,6 +873,33 @@ begin
      str := stringreplace(str, #13+#9, #13+#13+#9, [rfReplaceAll]);
      str := stringreplace(str, #13+#13+#13, #13+#13, [rfReplaceAll]);
      result := str+'>';
+end;
+
+function tfrmMain.makeValuesOrItens(s: String): String;
+var
+  memo: Tmemo;
+  i: integer;
+  str: string;
+begin
+
+  memo := TMemo.Create(self);
+  memo.visible := false;
+  memo.clear;
+  memo.text := s;
+
+  str := '{';
+  i:= 0;
+  while i < memo.Lines.Count - 2 do
+  begin
+        str := str + '''' + memo.Lines.Strings[i] + ''', ';
+        i := i +1;
+  end;
+
+  str := str + '''' + memo.Lines.Strings[i] + '''}';
+
+  memo.Free;
+
+  result := str;
 end;
 
 end.
