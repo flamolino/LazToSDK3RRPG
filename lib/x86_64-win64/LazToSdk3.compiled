@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <Compiler Value="C:\lazarus\fpc\3.0.2\bin\x86_64-win64\fpc.exe" Date="1247521003"/>
-  <Params Value=" -MObjFPC -Scghi -O1 -g -gl -WG -l -vewnhibq -FiC:\Users\RAFA\Documents\GitHub\LazToSDK3RRPG\lib\x86_64-win64 -FuC:\Users\RAFA\Documents\GitHub\LazToSDK3RRPG\componente\lib\x86_64-win64 -FuC:\lazarus\lcl\units\x86_64-win64\win32 -FuC:\lazarus\lcl\units\x86_64-win64 -FuC:\lazarus\components\lazutils\lib\x86_64-win64 -FuC:\lazarus\packager\units\x86_64-win64 -FuC:\Users\RAFA\Documents\GitHub\LazToSDK3RRPG\ -FUC:\Users\RAFA\Documents\GitHub\LazToSDK3RRPG\lib\x86_64-win64\ -dLCL -dLCLwin32 LazToSdk3.lpr"/>
+  <Params Value=" -MObjFPC -Scghi -O1 -g -gl -WG -l -vewnhibq -FiC:\Users\04783714118\Documents\GitHub\LazToSDK3RRPG\lib\x86_64-win64 -FuC:\Users\04783714118\Documents\GitHub\LazToSDK3RRPG\componente\lib\x86_64-win64 -FuC:\lazarus\lcl\units\x86_64-win64\win32 -FuC:\lazarus\lcl\units\x86_64-win64 -FuC:\lazarus\components\lazutils\lib\x86_64-win64 -FuC:\lazarus\packager\units\x86_64-win64 -FuC:\Users\04783714118\Documents\GitHub\LazToSDK3RRPG\ -FUC:\Users\04783714118\Documents\GitHub\LazToSDK3RRPG\lib\x86_64-win64\ -dLCL -dLCLwin32 LazToSdk3.lpr"/>
 </CONFIG>

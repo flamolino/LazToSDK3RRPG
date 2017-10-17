@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Menus,
-  ExtCtrls, StdCtrls, LCLIntf, Buttons, DbCtrls, ComCtrls,
+  ExtCtrls, StdCtrls, LCLIntf, Buttons, DbCtrls, ComCtrls, TypInfo,
   componentes1;
 
 type
@@ -17,52 +17,9 @@ type
     chkTagForm: TCheckBox;
     cbbTemplate: TComboBox;
     cbbTheme: TComboBox;
-    SDK3ComboBox1: TSDK3ComboBox;
-    Verso: TCustomPage;
-    Frente: TCustomPage;
     edtDataType: TEdit;
     edtTitle: TEdit;
     edtNome: TEdit;
-    SDK3Button1: TSDK3Button;
-    SDK3Button2: TSDK3Button;
-    SDK3Button3: TSDK3Button;
-    SDK3Button4: TSDK3Button;
-    SDK3CheckBox1: TSDK3CheckBox;
-    SDK3CheckBox2: TSDK3CheckBox;
-    SDK3CheckBox3: TSDK3CheckBox;
-    SDK3CheckBox5: TSDK3CheckBox;
-    SDK3Edit1: TSDK3Edit;
-    SDK3Edit10: TSDK3Edit;
-    SDK3Edit11: TSDK3Edit;
-    SDK3Edit2: TSDK3Edit;
-    SDK3Edit3: TSDK3Edit;
-    SDK3Edit4: TSDK3Edit;
-    SDK3Edit5: TSDK3Edit;
-    SDK3Edit6: TSDK3Edit;
-    SDK3Edit7: TSDK3Edit;
-    SDK3Edit8: TSDK3Edit;
-    SDK3Edit9: TSDK3Edit;
-    SDK3Image1: TSDK3Image;
-    SDK3Label1: TSDK3Label;
-    SDK3Label10: TSDK3Label;
-    SDK3Label11: TSDK3Label;
-    SDK3Label12: TSDK3Label;
-    SDK3Label13: TSDK3Label;
-    SDK3Label14: TSDK3Label;
-    SDK3Label15: TSDK3Label;
-    SDK3Label16: TSDK3Label;
-    SDK3Label2: TSDK3Label;
-    SDK3Label3: TSDK3Label;
-    SDK3Label4: TSDK3Label;
-    SDK3Label5: TSDK3Label;
-    SDK3Label6: TSDK3Label;
-    SDK3Label7: TSDK3Label;
-    SDK3Label8: TSDK3Label;
-    SDK3Label9: TSDK3Label;
-    SDK3Layout1: TSDK3Layout;
-    SDK3ProgressBar1: TSDK3ProgressBar;
-    SDK3RichEdit1: TSDK3RichEdit;
-    SDK3TabControl1: TSDK3TabControl;
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
     ToolButton2: TToolButton;
@@ -70,6 +27,7 @@ type
     ToolButton4: TToolButton;
     ToolButton5: TToolButton;
 
+    procedure Button1Click(Sender: TObject);
     procedure cbbThemeChange(Sender: TObject);
     procedure chkTagFormChange(Sender: TObject);
     function TColorToHex(Cor: TColor): string;
@@ -155,7 +113,7 @@ begin
      LowerCase(booltostr(item.Visible)) + '" field="' + xMLE(item.Field) + '" ' +
      'fontColor="#' + TColorToHex(item.Font.Color) +
      '" fontFamily="' + xMLE(item.Font.Name) + '" fontSize="' + inttostr(item.Font.Size) + '"'+
-     ' items="' + makeValuesOrItens(item.Items.Text) + '" values="' + (item.values.Text) + '" value="' + item.value + '" ';
+     ' items="' + makeValuesOrItens(item.Items.Text) + '" values="' + makeValuesOrItens(item.values.Text) + '" value="' + item.value + '" ';
 
      s := s + Fonts(item.Font);
      s := s + ' ' + Aligns(item);
@@ -190,7 +148,9 @@ begin
      'textPrompt="' + xMLE(item.TextPrompt) + '" transparent="' + LowerCase(booltostr(item.Transparent))+
      '" isPasswordEdit="' + LowerCase(booltostr(item.IsPasswordEdit)) + '" min="' + floattostr(item.Min) +
      '" max="' + floattostr(item.Max) + '" decimalPlaces="'+ inttostr(item.DecimalPlaces) + '" asNumber="'+
-     floattostr(item.asNumber)+'" ';
+     floattostr(item.asNumber)+'" type="' + getEnumName(TypeInfo(TMyType), integer(item.Typee)) +
+     '" keyboardType=' + getEnumName(TypeInfo(TMyKeyType), integer(item.KeyboardType)) +
+     '" enterKeyType=' + getEnumName(TypeInfo(TEnterKeyType), integer(item.EnterKeyType)) + '" ';
 
      s := s + Fonts(item.Font);
      s := s + ' ' + Aligns(item);
@@ -208,7 +168,9 @@ begin
      inttostr(item.MaxControlsPerLine) + '" maxColumns="' + inttostr(item.MaxColumns)+
      '" lineSpacing="' + floattostr(item.LineSpacing) + '" '+'contentWidth="' +
      floattostr(item.ContentWidth) + '" contentHeight="' + floattostr(item.ContentHeight) +
-     '" frameStyle="' + xMLE(item.FrameStyle) + '" frameRegion="' + xMLE(item.FrameRegion) +'"';
+     '" frameStyle="' + xMLE(item.FrameStyle) + '" frameRegion="' + xMLE(item.FrameRegion) +
+     '" horzAlign="' + getEnumName(TypeInfo(THorzAlign), integer(item.HorzAlign)) +
+     '" orientation="' + getEnumName(TypeInfo(TOrientation), integer(item.Orientation)) +'" ';
 
      s := s + ' ' + Aligns(item);
      result := Replaces(s, '<flowLayout ');
@@ -227,7 +189,8 @@ begin
      floattostr(item.NaturalHeight) + '" optimize="' +
      LowerCase(booltostr(item.Optimize)) + '" showProgress="' +
      LowerCase(booltostr(item.ShowProgress)) + '" src="' + xMLE(item.Src) + '" ' +
-     'URLWhileLoading="' + xMLE(item.URLWhileLoading) + '" ';
+     'URLWhileLoading="' + xMLE(item.URLWhileLoading) +
+     '" showStyle="' + getEnumName(TypeInfo(TShowStyle), integer(item.ShowStyle)) +'" ';
 
      s := s + ' ' + AlignsNotWinControl(item.Align, item);
      result := Replaces(s, '<image ');
@@ -258,7 +221,8 @@ begin
      '" minScaledWidth="'+ floattostr(item.MinScaledWidth) + '" maxScaledWidth="' +
      floattostr(item.MaxScaledWidth) + '" avoidScale="' + LowerCase(booltostr(item.AvoidScale)) +
      '" stepSizes="' + xMLE(item.StepSizes) + '" adjustHeightToLine="' +
-     LowerCase(booltostr(item.adjustHeightToLine)) + '" ' ;
+     LowerCase(booltostr(item.adjustHeightToLine)) +
+     '" vertAlign="' + getEnumName(TypeInfo(TVertAlign), integer(item.VertAlign)) +'" ' ;
 
      s := s  + Aligns(item);
      result := Replaces(s, '<flowPart ');
@@ -305,7 +269,9 @@ begin
      LowerCase(booltostr(item.Visible)) + '" ' +
      'position="' + floattostr(item.Position) + '" min="' + floattostr(item.Min) +
      '" max="' + floattostr(item.Max) + '" mouseGlow="' + LowerCase(booltostr(item.mouseGlow)) +
-     '" color="#' + TColorToHex(item.Color) + '" field="' + xMLE(item.Field) + '" ';
+     '" color="#' + TColorToHex(item.Color) + '" field="' + xMLE(item.Field) +
+     '" colorMode="' + getEnumName(TypeInfo(TColorMode), integer(item.ColorMode)) +
+     '" fieldMin="' + item.fieldMin + '" fieldMax="' + item.fieldMax + '" ';
 
      s := s  + Aligns(item);
      result := Replaces(s, '<progressBar ');
@@ -767,6 +733,12 @@ begin
      s := stringReplace(s, 'fieldValue=""', '', [rfReplaceALL]);
      s := stringReplace(s, 'groupName=""', '', [rfReplaceALL]);
 
+     s := stringReplace(s, 'stretchh', 'stretch', [rfReplaceALL]);
+     s := stringReplace(s, 'leadingg', 'leading', [rfReplaceALL]);
+     s := stringReplace(s, 'centerr', 'center', [rfReplaceALL]);
+     s := stringReplace(s, 'trailingg', 'trailing', [rfReplaceALL]);
+     s := stringReplace(s, 'defaultt', 'default', [rfReplaceALL]);
+
      s := stringReplace(s, '   ', ' ', [rfReplaceALL]);
      s := stringReplace(s, '  ', ' ', [rfReplaceALL]);
 
@@ -821,6 +793,11 @@ begin
      frmMain.Color:=clWhite;
 end;
 
+procedure TfrmMain.Button1Click(Sender: TObject);
+begin
+  PaintBox1.Canvas.Ellipse(75,50,100,100);
+end;
+
 function TfrmMain.IdentarXMLorHTML(s: String): String;
 var
   i, w, lv: Integer;
@@ -842,7 +819,6 @@ begin
 
           if (s[i] + s[i+1]) = '</' then
           begin
-            // str := str + #13;
              lv := lv - 2;
           end;
 
