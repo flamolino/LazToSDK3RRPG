@@ -12,6 +12,28 @@ uses
 {   Classes, SysUtils, types, LCLStrConsts, LCLType, LCLProc, LMessages, Graphics,
   ExtendedStrings, LCLIntf, ActnList, Controls, TextStrings, LazUTF8,
   Forms, Menus, LResources;}
+{
+type
+  TTagsVisuais = class(TControl)
+  private
+
+  protected
+
+  public
+
+  published
+    property Visible;
+    property Enabled;
+    property Name;
+    property Align;
+    property Left;
+    property Top;
+    property Width;
+    property Height;
+//    property Margins;
+  end;
+}
+
 type
   TSDK3Button = class(TCustomButton)
   private
@@ -50,7 +72,7 @@ type
     FValues, FItems: TStrings ;
   protected
     procedure SetValues(const Value: TStrings); virtual;
-    procedure SetItems(const Value: TStrings); virtual;
+    procedure SetItems(const Value: TStrings); override;
   public
     constructor Create(aOwner: TComponent); override;
     destructor Destroy; override;
@@ -442,6 +464,8 @@ type
     FSides: TConSides;
     fxr, fyr: Double;
     procedure setCornerType(AValue: TCornerType);
+    procedure setxR(AValue: Double);
+    procedure setyR(AValue: Double);
   protected
     procedure Paint; override;
   public
@@ -450,8 +474,8 @@ type
     property Corners: TConCorners read Fcorner write FCorner;
     property CornerType: TCornerType read FCornerType write setCornerType;
     property Sides: TConSides read FSides write FSides;
-    property Xradius: Double read FxR write FxR;
-    property Yradius: Double read FyR write FyR;
+    property Xradius: Double read FxR write setxR;
+    property Yradius: Double read FyR write setyR;
   end;
 
 procedure Register;
@@ -467,15 +491,19 @@ begin
   TCustomPage, TSDK3RichEdit, TSDK3ScrollBox, TSDK3Rectangle]);
 end;
 
+
+
+
 { TSDK3Layout }
 
 constructor TSDK3Layout.Create(aOwner: TComponent);
 begin
   inherited;
-  Caption := ' asdasdas';
   BevelOuter := TPanelBevel.bvNone;
   BorderStyle := TFormBorderStyle.bsSingle;
+  Caption := '';
 end;
+
 
 
 
@@ -571,6 +599,20 @@ procedure TSDK3Rectangle.setCornerType(AValue: TCornerType);
 begin
   if FCornerType=AValue then Exit;
   FCornerType:=AValue;
+  repaint;
+end;
+
+procedure TSDK3Rectangle.setxR(AValue: Double);
+begin
+  if FxR=AValue then Exit;
+  FxR:=AValue;
+  repaint;
+end;
+
+procedure TSDK3Rectangle.setyR(AValue: Double);
+begin
+  if FyR=AValue then Exit;
+  FyR:=AValue;
   repaint;
 end;
 

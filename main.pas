@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, Menus,
-  ExtCtrls, StdCtrls, LCLIntf, Buttons, DbCtrls, ComCtrls, TypInfo,
-  componentes1;
+  ExtCtrls, StdCtrls, LCLIntf, Buttons, DbCtrls, ComCtrls,
+  TypInfo, componentes1;
 
 type
 
@@ -27,7 +27,6 @@ type
     ToolButton4: TToolButton;
     ToolButton5: TToolButton;
 
-    procedure Button1Click(Sender: TObject);
     procedure cbbThemeChange(Sender: TObject);
     procedure chkTagFormChange(Sender: TObject);
     function TColorToHex(Cor: TColor): string;
@@ -738,6 +737,10 @@ begin
      s := stringReplace(s, 'centerr', 'center', [rfReplaceALL]);
      s := stringReplace(s, 'trailingg', 'trailing', [rfReplaceALL]);
      s := stringReplace(s, 'defaultt', 'default', [rfReplaceALL]);
+     s := stringReplace(s, 'defaullt', 'default', [rfReplaceALL]);
+     s := stringReplace(s, 'roundd', 'round', [rfReplaceALL]);
+     s := stringReplace(s, 'rounndd', 'round', [rfReplaceALL]);
+     //s := stringReplace(s, '', '', [rfReplaceALL]);
 
      s := stringReplace(s, '   ', ' ', [rfReplaceALL]);
      s := stringReplace(s, '  ', ' ', [rfReplaceALL]);
@@ -791,11 +794,6 @@ begin
      frmMain.Color:=$004E4E4E
   else
      frmMain.Color:=clWhite;
-end;
-
-procedure TfrmMain.Button1Click(Sender: TObject);
-begin
-  PaintBox1.Canvas.Ellipse(75,50,100,100);
 end;
 
 function TfrmMain.IdentarXMLorHTML(s: String): String;
