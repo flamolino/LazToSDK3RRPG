@@ -493,9 +493,9 @@ end;
 constructor TSDK3ComboBox.Create(aOwner: TComponent);
 begin
      inherited;
-     FItems := TStringList.Create();
+     FItems := TStringList.Create;
      FItems.Clear;
-     FValues := TStringList.Create();
+     FValues := TStringList.Create;
      FValues.Clear;
 end;
 

@@ -134,4 +134,20 @@ object frmMain: TfrmMain
       Text = 'NOME_AQUI'
     end
   end
+  object SDK3Edit1: TSDK3Edit
+    Left = 126
+    Height = 23
+    Top = 145
+    Width = 80
+    Transparent = False
+    IsPasswordEdit = False
+    Typee = text
+    KeyboardType = default
+    EnterKeyType = defaullt
+    Min = 0
+    Max = 0
+    DecimalPlaces = 0
+    AsNumber = 0
+    Text = 'SDK3Edit1'
+  end
 end

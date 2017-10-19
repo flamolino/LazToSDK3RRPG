@@ -12,27 +12,7 @@ uses
 {   Classes, SysUtils, types, LCLStrConsts, LCLType, LCLProc, LMessages, Graphics,
   ExtendedStrings, LCLIntf, ActnList, Controls, TextStrings, LazUTF8,
   Forms, Menus, LResources;}
-{
-type
-  TTagsVisuais = class(TControl)
-  private
 
-  protected
-
-  public
-
-  published
-    property Visible;
-    property Enabled;
-    property Name;
-    property Align;
-    property Left;
-    property Top;
-    property Width;
-    property Height;
-//    property Margins;
-  end;
-}
 
 type
   TSDK3Button = class(TCustomButton)

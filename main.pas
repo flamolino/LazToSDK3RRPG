@@ -17,9 +17,14 @@ type
     chkTagForm: TCheckBox;
     cbbTemplate: TComboBox;
     cbbTheme: TComboBox;
+    CustomPage1: TCustomPage;
+    CustomPage2: TCustomPage;
     edtDataType: TEdit;
     edtTitle: TEdit;
     edtNome: TEdit;
+    SDK3ColorComboBox1: TSDK3ColorComboBox;
+    SDK3ComboBox1: TSDK3ComboBox;
+    SDK3TabControl1: TSDK3TabControl;
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
     ToolButton2: TToolButton;
@@ -107,16 +112,20 @@ function TfrmMain.MakeComboBox(item: TSDK3ComboBox): String;
 var
   s: String;
 begin
-     s := 'enabled="' + LowerCase(booltostr(item.Enabled)) +
-     '" hint="' + xMLE(item.Hint) + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
-     LowerCase(booltostr(item.Visible)) + '" field="' + xMLE(item.Field) + '" ' +
-     'fontColor="#' + TColorToHex(item.Font.Color) +
-     '" fontFamily="' + xMLE(item.Font.Name) + '" fontSize="' + inttostr(item.Font.Size) + '"'+
-     ' items="' + makeValuesOrItens(item.Items.Text) + '" values="' + makeValuesOrItens(item.values.Text) + '" value="' + item.value + '" ';
+     if (item.Items.Count > 0) and (item.Values.Count > 0) then
+     begin
+       s := 'enabled="' + LowerCase(booltostr(item.Enabled)) +
+       '" hint="' + xMLE(item.Hint) + '" tabOrder="' + inttostr(item.Tag) + '" visible="' +
+       LowerCase(booltostr(item.Visible)) + '" field="' + xMLE(item.Field) + '" ' +
+       'fontColor="#' + TColorToHex(item.Font.Color) +
+       '" fontFamily="' + xMLE(item.Font.Name) + '" fontSize="' + inttostr(item.Font.Size) + '"'+
+       ' items="' + makeValuesOrItens(item.Items.Text) + '" values="' + makeValuesOrItens(item.values.Text) + '" value="' + item.value + '" ';
 
-     s := s + Fonts(item.Font);
-     s := s + ' ' + Aligns(item);
-     result := Replaces(s, '<comboBox ');
+       s := s + Fonts(item.Font);
+       s := s + ' ' + Aligns(item);
+       result := Replaces(s, '<comboBox ');
+     end;
+
 end;
 
 function TfrmMain.MakeCheckBox(item: TSDK3CheckBox): String;
@@ -148,8 +157,8 @@ begin
      '" isPasswordEdit="' + LowerCase(booltostr(item.IsPasswordEdit)) + '" min="' + floattostr(item.Min) +
      '" max="' + floattostr(item.Max) + '" decimalPlaces="'+ inttostr(item.DecimalPlaces) + '" asNumber="'+
      floattostr(item.asNumber)+'" type="' + getEnumName(TypeInfo(TMyType), integer(item.Typee)) +
-     '" keyboardType=' + getEnumName(TypeInfo(TMyKeyType), integer(item.KeyboardType)) +
-     '" enterKeyType=' + getEnumName(TypeInfo(TEnterKeyType), integer(item.EnterKeyType)) + '" ';
+     '" keyboardType="' + getEnumName(TypeInfo(TMyKeyType), integer(item.KeyboardType)) +
+     '" enterKeyType="' + getEnumName(TypeInfo(TEnterKeyType), integer(item.EnterKeyType)) + '" ';
 
      s := s + Fonts(item.Font);
      s := s + ' ' + Aligns(item);
